@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Keine Herkunftsangabe (Referer) an fremde Seiten senden (Datenschutz der Leser) -->
+  <meta name="referrer" content="no-referrer">
+  <!-- Probeedition: nicht in Suchmaschinen aufnehmen (Entscheidung des Herausgebers vom 01.11.2026) -->
+  <meta name="robots" content="noindex">
+  <title>Magistri Honorii Summa Quaestionum – Digital Edition</title>
+  <link rel="stylesheet" href="honorius.css">
+</head>
+<!-- data-tei: die darzustellende TEI-Datei (relativ zu dieser Seite); alternativ ?tei=… in der Adresse -->
+<body data-tei="tei/honorius_D2_t1.xml">
+  <a class="sprung" href="#edition">Skip to text</a>
+
+  <header class="kopf">
+    <div class="kopf-titel">
+      <p class="werk">Magistri Honorii</p>
+      <h1>Summa Quaestionum <span class="incipit">‘De quaestionibus decretalibus tractaturi’</span></h1>
+      <p class="stand" id="stand">Digital edition</p>
+    </div>
+    <div class="kopf-werkzeuge">
+      <div class="ansicht-schalter" role="group" aria-label="View">
+        <button type="button" id="knopf-lesen" aria-pressed="true">Reading view</button>
+        <button type="button" id="knopf-viewer" aria-pressed="false" title="Text and manuscript P side by side">Parallel view</button>
+      </div>
+      <button type="button" id="knopf-inhalt" class="nur-schmal" aria-controls="navigation" aria-expanded="false">Contents</button>
+      <button type="button" id="knopf-zitieren">Cite</button>
+      <a id="verweis-tei" href="#" download>TEI-XML</a>
+    </div>
+  </header>
+
+  <!-- Browser ohne CSS Custom Highlight API (Chrome/Edge < 105, Safari < 17.2, Firefox < 140): honorius.js zeigt diesen Hinweis -->
+  <p id="browser-hinweis" class="browser-hinweis" role="status" hidden>This browser does not support the highlighting
+    of lemmata and sources used in this edition. For full functionality, please use a current version of Firefox,
+    Chrome, Edge or Safari.</p>
+
+  <div class="rahmen">
+    <nav id="navigation" aria-label="Contents and view">
+      <h2>Contents</h2>
+      <ol id="inhalt" class="inhalt"></ol>
+
+      <h2>Indices</h2>
+      <ul class="register-liste">
+        <li><a href="#register-personen">Persons</a></li>
+        <li><a href="#register-allegationen">Allegations</a></li>
+        <li><a href="#register-handschriften">Manuscripts</a></li>
+      </ul>
+
+      <h2>View</h2>
+      <div class="modus-schalter" role="radiogroup" aria-label="Text mode">
+        <label><input type="radio" name="modus" id="modus-varianten" value="varianten" checked> Variants</label>
+        <label><input type="radio" name="modus" id="modus-quellen" value="quellen"> Sources</label>
+      </div>
+      <label class="schalter"><input type="checkbox" id="opt-zeilen" checked> Line numbers</label>
+      <label class="schalter"><input type="checkbox" id="opt-apparat" checked> Apparatus</label>
+      <label class="schalter"><input type="checkbox" id="opt-lemmata"> Show lemmata</label>
+      <!-- Hinweis je nach Modus (nur-varianten / nur-quellen) und Bedienung (nur-maus / nur-touch), siehe honorius.css -->
+      <p class="hinweis">
+        <span class="nur-varianten"><strong>Variants:</strong> <span class="nur-maus">point at the text to highlight a lemma; click to mark it together with its entry in the critical apparatus.</span><span class="nur-touch">tap the text to mark a lemma together with its entry in the critical apparatus.</span> “Show lemmata” underlines all lemmata.</span>
+        <span class="nur-quellen"><strong>Sources:</strong> <span class="nur-maus">point at the text to highlight allegations and passages with a source note; click an allegation to open it, or a passage to mark it together with its note.</span><span class="nur-touch">tap an allegation to open it, or a passage with a source note to mark it together with its note.</span> “Show lemmata” underlines all sources.</span>
+        Clicking or tapping an apparatus entry marks its place in the text.
+      </p>
+    </nav>
+
+    <main id="edition" tabindex="-1">
+      <p class="laden">Loading edition …</p>
+      <noscript><style>.laden, .kopf-werkzeuge { display: none; } nav { visibility: hidden; }</style>
+        <p class="fehler">This digital edition requires JavaScript. Please enable JavaScript in your browser.</p></noscript>
+    </main>
+    <script>
+      // Zu alte Browser (ohne die Sprachmittel und Schnittstellen der Leseansicht): Hinweis statt "Loading edition …".
+      // Absichtlich in alter Schreibweise (ES5), damit auch sehr alte Browser dieses Stück ausführen können.
+      (function () {
+        var ok = !!(window.fetch && window.Promise && window.Map && window.IntersectionObserver);
+        try { new Function("try { return ({})?.a; } catch { return 0; }"); } catch (e) { ok = false; }
+        if (!ok) {
+          window.HONORIUS_ZU_ALT = true;
+          document.getElementById("navigation").style.visibility = "hidden";     // Bedienelemente ohne Funktion
+          document.querySelector(".kopf-werkzeuge").style.display = "none";
+          document.getElementById("edition").innerHTML = '<p class="fehler">This browser is too old to display the ' +
+            "digital edition. Please use a current version of Firefox, Chrome, Edge or Safari.</p>";
+        }
+      })();
+    </script>
+
+    <!-- Parallelansicht: Handschrift P neben dem Text (IIIF-Bilder von Gallica, OpenSeadragon) -->
+    <aside id="viewer" class="viewer" aria-label="Manuscript P">
+      <div class="viewer-leiste">
+        <button type="button" id="viewer-zurueck" title="Previous page" aria-label="Previous page">‹</button>
+        <span id="viewer-seite" class="viewer-seite" aria-live="polite">MS P</span>
+        <button type="button" id="viewer-vor" title="Next page" aria-label="Next page">›</button>
+        <span class="viewer-abstand"></span>
+        <button type="button" id="viewer-kleiner" title="Zoom out" aria-label="Zoom out">−</button>
+        <button type="button" id="viewer-groesser" title="Zoom in" aria-label="Zoom in">+</button>
+        <button type="button" id="viewer-ganz" title="Whole page">Fit</button>
+        <label class="schalter" title="Turn the page while reading"><input type="checkbox" id="viewer-folgen" checked> Follow text</label>
+        <a id="viewer-gallica" href="https://gallica.bnf.fr/ark:/12148/btv1b525185992" target="_blank" rel="noopener noreferrer" title="Open this page in Gallica">Gallica ↗</a>
+      </div>
+      <div id="viewer-bild" class="viewer-bild"></div>
+      <p id="viewer-meldung" class="viewer-meldung" hidden></p>
+      <p class="viewer-quelle">MS P = Paris, BnF, lat. 14591 · Source: <a href="https://gallica.bnf.fr/ark:/12148/btv1b525185992" target="_blank" rel="noopener noreferrer">gallica.bnf.fr</a> / BnF</p>
+    </aside>
+  </div>
+
+  <dialog id="dialog-zitieren" aria-labelledby="zitieren-titel">
+    <h2 id="zitieren-titel">Cite this passage</h2>
+    <p id="zitieren-text" class="zitat-vorschlag"></p>
+    <div class="dialog-knoepfe">
+      <button type="button" id="knopf-kopieren">Copy</button>
+      <button type="button" id="knopf-schliessen">Close</button>
+    </div>
+  </dialog>
+
+  <div id="popup" class="popup" role="dialog" aria-label="Apparatus entries" hidden></div>
+
+  <footer class="fuss">
+    <p><strong>Sample edition, working draft.</strong> Print edition: N. Becker, W. Kozur, K. Miethaner-Vent, Würzburg 2021,
+      <a href="https://honorius-summa-quaestionum.com/">honorius-summa-quaestionum.com</a> (CC BY-NC-ND 4.0).
+      TEI encoding: Niels Becker.</p>
+    <p>Allegations link to the <a href="https://geschichte.digitale-sammlungen.de/decretum-gratiani/">Decretum Gratiani online</a>
+      (BSB/MGH). Manuscript P: <a href="https://gallica.bnf.fr/ark:/12148/btv1b525185992">Gallica, BnF lat. 14591</a>.
+      Rendering: <a href="https://github.com/TEIC/CETEIcean">CETEIcean</a>. Image viewer: <a href="https://openseadragon.github.io/">OpenSeadragon</a>.
+      Typeface: <a href="https://github.com/psb1558/Junicode-font">Junicode</a> (SIL OFL).</p>
+    <p><a href="about.html">About this edition</a> · <a href="about.html#licences">Licences</a> ·
+      <a href="about.html#imprint">Imprint</a> · <a href="about.html#privacy">Privacy</a></p>
+  </footer>
+
+  <script src="lib/CETEI.js"></script>
+  <script src="honorius.js"></script>
+</body>
+</html>

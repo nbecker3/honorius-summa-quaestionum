@@ -1,0 +1,820 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="la">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Magistri Honorii Summa Quaestionum ‘De quaestionibus decretalibus tractaturi’, D.2 t.1 de simonia</title>
+        <editor>Niels Becker</editor>
+        <editor>Waltraud Kozur</editor>
+        <editor>Karin Miethaner-Vent</editor>
+        <respStmt>
+          <resp xml:lang="de">TEI-Kodierung (Entwurf)</resp>
+          <name>Niels Becker</name>
+        </respStmt>
+      </titleStmt>
+      <editionStmt>
+        <edition xml:lang="en">Digital sample edition (working draft)</edition>
+      </editionStmt>
+      <!-- Veröffentlichung als Probeedition auf GitHub Pages (Entscheidungen des Herausgebers vom 01.11.2026) -->
+      <publicationStmt>
+        <publisher><persName>Niels Becker</persName>, <orgName>Katholisch-Theologische Fakultät, Ludwig-Maximilians-Universität München</orgName></publisher>
+        <pubPlace>München</pubPlace>
+        <date when="2026-11-01">2026</date>
+        <idno type="URI">https://nbecker3.github.io/honorius-summa-quaestionum/</idno>
+        <availability>
+          <licence target="https://creativecommons.org/licenses/by-nc-nd/4.0/" xml:lang="de">Creative Commons Namensnennung – Nicht kommerziell – Keine Bearbeitungen 4.0 International (CC BY-NC-ND 4.0), wie die Druckfassung.</licence>
+        </availability>
+      </publicationStmt>
+      <sourceDesc>
+        <bibl xml:id="ed2021">Magistri Honorii Summa Quaestionum ‘De quaestionibus decretalibus tractaturi’ (D.2), ediderunt Niels Becker, Waltraud Kozur, Karin Miethaner-Vent, Würzburg 2021 (30.06.2021). <ref target="https://honorius-summa-quaestionum.com/">honorius-summa-quaestionum.com</ref></bibl>
+        <listWit>
+          <witness xml:id="P">Paris, Bibliothèque nationale de France, lat. 14591, fol. 50ra–83ra (Leithandschrift)</witness>
+          <witness xml:id="La">Laon, Bibliothèque municipale 371bis, fol. 171ra–176vb (D.2 only)</witness>
+          <witness xml:id="L">Leipzig, Universitätsbibliothek 984, fol. 90ra–109vb</witness>
+          <witness xml:id="Z">Zwettl, Stiftsbibliothek 162, fol. 179ra–213ra</witness>
+          <witness xml:id="B">Bamberg, Staatsbibliothek, Msc. Can. 45 (P. II. 4), fol. 23ra–39va</witness>
+          <witness xml:id="D">Douai, Bibliothèque municipale 640 (584), fol. 1ra–42va</witness>
+        </listWit>
+        <listBibl>
+          <bibl xml:id="friedberg">Decretum magistri Gratiani, ed. Aemilius Friedberg, Leipzig 1879 (Corpus iuris canonici 1); digital: Münchener Digitalisierungszentrum / MGH, <ref target="https://geschichte.digitale-sammlungen.de/decretum-gratiani/">geschichte.digitale-sammlungen.de/decretum-gratiani</ref></bibl>
+        </listBibl>
+      </sourceDesc>
+    </fileDesc>
+    <encodingDesc>
+      <editorialDecl>
+        <p xml:lang="de">Text, Zeilen- und Seitenzählung nach der Druckfassung (ed2021): &lt;lb n&gt; mit break="no" bei Silbentrennung, &lt;pb ed="#ed2021"&gt;. Gliederung: quaestio – queritur / videtur / econtra / solutio (Wiederholungen innerhalb einer quaestio als weitere divs gleichen Typs; „Et non uidetur“ als videtur).</p>
+        <p xml:lang="de">Kritischer Apparat: @type der Lesarten: om (omittit), add (addit; Lesart = Lemma mit Zusatz), praem (praemittit; Zusatz vor dem Lemma), marg (am Rand; als witDetail), supra (über der Zeile; als witDetail), pc (post correctionem). Eine hochgestellte Ziffer im Lemma zählt die Vorkommen des Wortes in seiner Zeile. Korrekturen gegenüber der Druckfassung sind im jeweiligen &lt;app&gt; als Kommentar vermerkt.</p>
+        <p xml:lang="de">Wörtliche Zitate (&lt;quote&gt;) verweisen mit @source auf die Allegation, die ihre Quelle angibt. Gottes- und Christusnamen als &lt;name type="divine"&gt;, getrennt von &lt;persName&gt;.</p>
+        <p xml:lang="de">Blatt- und Spaltenwechsel der Leithandschrift P: &lt;pb ed="#P" n="61r" facs="#P-f123"/&gt; (Blatt, mit Verweis auf die Seite des Digitalisats) und &lt;cb ed="#P" n="61ra"/&gt; (Spalte, mit Blattangabe); am Anfang des Titulus die Spalte, in der er in P beginnt. Fällt ein Wechsel in eine Stelle mit abweichendem Wortlaut von P, steht er dort, wo er in P liegt (z.B. nach dem Lemma, wenn ein Zusatz von P schon auf dem neuen Blatt steht).</p>
+        <p xml:lang="de">Eingangsfragen im Digitalisat von P: Je Quaestio umschließt eine &lt;zone&gt; in der &lt;surface&gt; der Seite die Eingangsfrage in P, vom Paragraphzeichen bis zum Satzschluss (einschließlich zugehöriger Randeinträge). @points gibt den Umriss als Polygon in Pixeln des IIIF-Vollbilds (Ursprung oben links; Maße der Seite in @lrx/@lry der &lt;surface&gt;), @ulx/@uly/@lrx/@lry das umschließende Rechteck. @facs am ersten div type="queritur" der Quaestio verweist auf die Zone.</p>
+      </editorialDecl>
+      <!-- Kritischer Apparat: Lemma und Lesarten stehen gesammelt im <back>; im Text markieren
+           leere <anchor/>-Paare Anfang und Ende jedes Lemmas (Methode "double end-point attachment").
+           Grund: Lemmata der Druckausgabe überlappen sich und überschreiten Gliederungsgrenzen. -->
+      <variantEncoding method="double-end-point" location="external"/>
+      <refsDecl>
+        <p xml:lang="de">Allegationen sind als &lt;ref type="allegation"&gt; kodiert. @subtype nennt die Quelle (gratian, extra, codex, digesta, institutiones, biblia …), @cRef die normalisierte moderne Zitierweise nach dem Quellenapparat (z.B. "C.1 q.1 c.1", "De cons. D.4 c.23", "C.1 q.4 p.c.12 §1"; bei Dekretalen und Konzilskanones die vollständige Angabe des Quellenapparats), @target die Ziel-URL. Ein &lt;ref&gt; je Stelle; was en bloc allegiert wird (auch verschiedene Quaestiones oder Dekretalen), umschließt zusätzlich &lt;seg type="allegationes"&gt;; @n nennt eine Sammelangabe des Quellenapparats, wo es sie gibt (z.B. "D.60 cc.1-3"). Dicta (p.c.) verlinken auf die Seite des vorangehenden Kanons, auf der sie in der Online-Ausgabe stehen. Hochgestellte Ziffern im Lemma zählen die Vorkommen des Wortes in seiner Zeile.</p>
+      </refsDecl>
+      <listPrefixDef>
+        <prefixDef ident="dg" matchPattern="(.+)" replacementPattern="https://geschichte.digitale-sammlungen.de/decretum-gratiani/kapitel/dc_chapter_$1">
+          <p xml:lang="de">Kapitel-IDs der Online-Ausgabe des Decretum Gratiani (BSB/MGH).</p>
+        </prefixDef>
+        <prefixDef ident="gallicap" matchPattern="f(\d+)" replacementPattern="https://gallica.bnf.fr/ark:/12148/btv1b525185992/f$1.item">
+          <p xml:lang="de">Ansichten des Gallica-Digitalisats von P.</p>
+        </prefixDef>
+      </listPrefixDef>
+    </encodingDesc>
+    <revisionDesc>
+      <change when="2026-11-01">Erzeugt aus der Druckfassung mit tools/pdf_auszug.py und tools/tei_aus_auszug.py (Festlegungen: tools/auszeichnung_D2_t1.py).</change>
+    </revisionDesc>
+  </teiHeader>
+
+  <!-- Digitalisat der Leithandschrift P (IIIF-Bild + Gallica-Viewer); Blatt und Ansicht nach dem IIIF-Manifest -->
+  <facsimile>
+    <surface xml:id="P-f122" n="60v" ulx="0" uly="0" lrx="3214" lry="4855">
+      <graphic url="https://gallica.bnf.fr/iiif/ark:/12148/btv1b525185992/f122/full/full/0/native.jpg"/>
+      <graphic url="gallicap:f122" type="viewer"/>
+      <!-- q.1: Eingangsfrage, P fol. 60vb Z. 1–2; Initiale Q nicht ausgeführt (Raum frei): Rahmen ab dem linken Spaltenrand -->
+      <zone xml:id="D2.t1.q1.P" ulx="1877" uly="442" lrx="2878" lry="588" points="1877,442 2878,442 2878,588 1877,588"/>
+      <!-- q.2: Eingangsfrage, P fol. 60vb Z. 9–10 -->
+      <zone xml:id="D2.t1.q2.P" ulx="1877" uly="969" lrx="2878" lry="1092" points="2545,969 2878,969 2878,1029 2076,1029 2076,1092 1877,1092 1877,1029 2545,1029"/>
+      <!-- q.3: Eingangsfrage, P fol. 60vb Z. 18–20; mit dem Randeintrag rechts neben Z. 19: c mit waagrechtem Kürzungsstrich und nolit (= cum nolit, Druck Z. 28); Verweiszeichen im Text vor ordinari (vom Herausgeber so bestätigt am 25.10.2026; im kritischen Apparat ergänzt am 01.11.2026) -->
+      <zone xml:id="D2.t1.q3.P" ulx="1877" uly="1540" lrx="2998" lry="1729" points="2435,1540 2878,1540 2878,1604 2998,1604 2998,1663 2535,1663 2535,1729 1877,1729 1877,1604 2435,1604"/>
+      <!-- q.4: Eingangsfrage, P fol. 60vb Z. 28–29 -->
+      <zone xml:id="D2.t1.q4.P" ulx="1877" uly="2184" lrx="2878" lry="2314" points="2246,2184 2878,2184 2878,2250 1954,2250 1954,2314 1877,2314 1877,2250 2246,2250"/>
+      <!-- q.5: Eingangsfrage, P fol. 60vb Z. 35–36 -->
+      <zone xml:id="D2.t1.q5.P" ulx="1877" uly="2625" lrx="2878" lry="2742" points="2627,2625 2878,2625 2878,2682 2372,2682 2372,2742 1877,2742 1877,2682 2627,2682"/>
+      <!-- q.6: Eingangsfrage, P fol. 60vb Z. 44–46 -->
+      <zone xml:id="D2.t1.q6.P" ulx="1877" uly="3184" lrx="2878" lry="3378" points="2676,3184 2878,3184 2878,3312 2080,3312 2080,3378 1877,3378 1877,3245 2676,3245"/>
+    </surface>
+    <surface xml:id="P-f123" n="61r" ulx="0" uly="0" lrx="3156" lry="4812">
+      <graphic url="https://gallica.bnf.fr/iiif/ark:/12148/btv1b525185992/f123/full/full/0/native.jpg"/>
+      <graphic url="gallicap:f123" type="viewer"/>
+      <!-- q.7: Eingangsfrage, P fol. 61ra Z. 7–8 -->
+      <zone xml:id="D2.t1.q7.P" ulx="310" uly="824" lrx="1286" lry="947" points="610,824 1286,824 1286,888 384,888 384,947 310,947 310,888 610,888"/>
+      <!-- q.8: Eingangsfrage, P fol. 61ra Z. 18–22 -->
+      <zone xml:id="D2.t1.q8.P" ulx="310" uly="1508" lrx="1286" lry="1833" points="908,1508 1286,1508 1286,1768 416,1768 416,1833 310,1833 310,1572 908,1572"/>
+      <!-- q.9: Eingangsfrage, P fol. 61ra Z. 38–40 -->
+      <zone xml:id="D2.t1.q9.P" ulx="310" uly="2778" lrx="1286" lry="2962" points="999,2778 1286,2778 1286,2903 448,2903 448,2962 310,2962 310,2841 999,2841"/>
+      <!-- q.10: Eingangsfrage, P fol. 61ra Z. 51–52 -->
+      <zone xml:id="D2.t1.q10.P" ulx="310" uly="3611" lrx="1286" lry="3736" points="445,3611 1286,3611 1286,3677 567,3677 567,3736 310,3736 310,3677 445,3677"/>
+      <!-- q.11: Eingangsfrage, P fol. 61rb Z. 7–9 -->
+      <zone xml:id="D2.t1.q11.P" ulx="1362" uly="811" lrx="2358" lry="994" points="1884,811 2358,811 2358,930 2080,930 2080,994 1362,994 1362,871 1884,871"/>
+      <!-- q.12: Eingangsfrage, P fol. 61rb Z. 17–18 -->
+      <zone xml:id="D2.t1.q12.P" ulx="1362" uly="1446" lrx="2358" lry="1565" points="1795,1446 2358,1446 2358,1508 1638,1508 1638,1565 1362,1565 1362,1508 1795,1508"/>
+      <!-- q.13: Eingangsfrage, P fol. 61rb Z. 24–26 -->
+      <zone xml:id="D2.t1.q13.P" ulx="1362" uly="1885" lrx="2358" lry="2088" points="1850,1885 2358,1885 2358,2019 1702,2019 1702,2088 1362,2088 1362,1950 1850,1950"/>
+      <!-- q.14: Eingangsfrage, P fol. 61rb Z. 30–31 -->
+      <zone xml:id="D2.t1.q14.P" ulx="1362" uly="2274" lrx="2358" lry="2400" points="1627,2274 2358,2274 2358,2336 1557,2336 1557,2400 1362,2400 1362,2336 1627,2336"/>
+      <!-- q.15: Eingangsfrage, P fol. 61rb Z. 35–36; Paragraphzeichen allein am Ende von Z. 35, Queri potest beginnt in Z. 36 -->
+      <zone xml:id="D2.t1.q15.P" ulx="1362" uly="2592" lrx="2358" lry="2712" points="2284,2592 2358,2592 2358,2652 2326,2652 2326,2712 1362,2712 1362,2652 2284,2652"/>
+      <!-- q.16: Eingangsfrage, P fol. 61rb Z. 47–48 -->
+      <zone xml:id="D2.t1.q16.P" ulx="1362" uly="3348" lrx="2358" lry="3485" points="2162,3348 2358,3348 2358,3415 2280,3415 2280,3485 1362,3485 1362,3415 2162,3415"/>
+    </surface>
+  </facsimile>
+
+  <text>
+    <body>
+      <div type="distinctio" n="2" xml:id="D2">
+        <head><supplied reason="editorial">SECUNDA DISTINCTIO</supplied></head>
+
+        <!-- @facs verknüpft den titulus mit der Handschriftenseite in P -->
+        <div type="titulus" n="1" xml:id="D2.t1" facs="#P-f122">
+          <pb ed="#P" n="60v" facs="#P-f122"/><cb ed="#P" n="60vb"/>
+          <head><label>D.2 t.1</label> <anchor xml:id="D2.t1.a1s"/>de simonia<anchor xml:id="D2.t1.a1e"/></head>
+
+          <div type="quaestio" n="1" xml:id="D2.t1.q1">
+            <div type="queritur" facs="#D2.t1.q1.P">
+              <p><lb n="1"/><label>q.1</label> Queritur utrum ei conferatur gratia in ordinatione quem episco<lb n="2" break="no"/>pus ordinat obtentu muneris sibi ab aliquo ignorante ordinato collati.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="3"/>Et uidetur quia proprium est ordinis, ut cum eo gratia conferatur, at <lb n="4"/>delictum istius non est impedimento quominus conferatur, cum per <lb n="5"/>omnia sit dignus, nec alienum delictum debet esse impedimento, ut <lb n="6"/><seg type="allegationes"><ref xml:id="D2.t1.all1" type="allegation" subtype="gratian" cRef="C.1 q.4 p.c.12 §1" target="dg:1_1249">i. Q. iiii. <anchor xml:id="D2.t1.a2s"/>§ Notandum<anchor xml:id="D2.t1.a2e"/></ref>, <ref xml:id="D2.t1.all2" type="allegation" subtype="gratian" cRef="C.1 q.6 p.c.3" target="dg:1_1258">Q. vi. § ult.</ref></seg>, ergo confertur. Item: <quote xml:id="D2.t1.zit1" source="#D2.t1.all3">Gratia, si non <lb n="7"/>gratis datur uel accipitur, <anchor xml:id="D2.t1.a3s"/>non est gratia</quote>, <anchor xml:id="D2.t1.a4s"/>ut <ref xml:id="D2.t1.all3" type="allegation" subtype="gratian" cRef="C.1 q.1 c.1" target="dg:1_1080">i. Q. i. c. i.</ref> Ergo, si gratis <lb n="8"/>accipitur uel datur, est gratia<anchor xml:id="D2.t1.a4e"/>; set gratis accipitur<anchor xml:id="D2.t1.a3e"/>, ergo est gratia.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="9"/>Econtra: Si gratia non confertur, non habetur, set gratis non confertur, <lb n="10"/>ergo non habetur, uel <anchor xml:id="D2.t1.a5s"/>non<anchor xml:id="D2.t1.a5e"/> gratis potest conferri. <anchor xml:id="D2.t1.a6s"/>Set impossibile <anchor xml:id="D2.t1.a7s"/>est<anchor xml:id="D2.t1.a7e"/> <lb n="11"/>non gratis posse conferri, ut <ref xml:id="D2.t1.all4" type="allegation" subtype="gratian" rend="signum" cRef="C.1 q.1 c.1" n="ut ⸫ sc. C.1 q.1 c.1" target="dg:1_1080"><anchor xml:id="D2.t1.a8s"/>⸫<anchor xml:id="D2.t1.a8e"/></ref> Ergo impossibile <anchor xml:id="D2.t1.a9s"/>est<anchor xml:id="D2.t1.a9e"/> eam haberi uel <lb n="12"/>haberi potest etsi non conferatur.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="13"/>Solutio: Dici <anchor xml:id="D2.t1.a10s"/>debet gratiam conferri<anchor xml:id="D2.t1.a10e"/><anchor xml:id="D2.t1.a6e"/>. Set a quo? Ab episcopo ut instru<lb n="14" break="no"/>mento non causali set occasionali.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="2" xml:id="D2.t1.q2">
+            <div type="queritur" facs="#D2.t1.q2.P">
+              <p><lb n="15"/><label>q.2</label> Item queritur utrum gratia possit uendi.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="16"/>Et uidetur quia ordo de facto potest uendi. Set gratia sine ordine non <lb n="17"/><anchor xml:id="D2.t1.a11s"/>prouenit<anchor xml:id="D2.t1.a11e"/>, que secundum <persName xml:id="D2.t1.pers1" ref="#gandulphus">G.</persName> dicitur sanctitas sacerdotii, ergo ratione <lb n="18"/>comitantie et gratia similiter de facto.</p>
+            </div>
+            <pb ed="#ed2021" n="2"/>
+            <div type="econtra">
+              <p><lb n="19"/>Econtra: <quote xml:id="D2.t1.zit2" source="#D2.t1.all5">Gratia, si non gratis datur, non est gratia</quote>, ut <ref xml:id="D2.t1.all5" type="allegation" subtype="gratian" rend="signum" cRef="C.1 q.1 c.1" n="ut ⸪ sc. C.1 q.1 c.1" target="dg:1_1080"><anchor xml:id="D2.t1.a12s"/>⸪<anchor xml:id="D2.t1.a12e"/></ref> Set si <lb n="20"/>uenditur, gratis non datur. Ergo si uenditur, non est gratia. Item <lb n="21"/>considerata distinctione inter spiritualia pretiabilia de facto et non de <lb n="22"/>iure, et de facto et de iure, et nec de facto nec de iure apparet gratiam <lb n="23"/>nec de facto nec de iure posse uendi.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="24"/>Solutio: Vendi non potest. Reus tamen <anchor xml:id="D2.t1.a13s"/>dicitur gratie uendite episcopus<anchor xml:id="D2.t1.a13e"/> <lb n="25"/>quia quantum in eo fuit uendidit, sicut <anchor xml:id="D2.t1.a14s"/>hereticus dicitur polluere<anchor xml:id="D2.t1.a14e"/> corpus <lb n="26"/><name type="divine" ref="#christus">Christi</name> quantum in eo est, ut <ref xml:id="D2.t1.all6" type="allegation" subtype="gratian" cRef="C.1 q.1 c.97" target="dg:1_1176">i. Q. i. Quod quidam</ref>.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="3" xml:id="D2.t1.q3">
+            <div type="queritur" facs="#D2.t1.q3.P">
+              <p><lb n="27"/><label>q.3</label> Item queritur utrum si aliquis eligatur diaconus ut fiat decanus, <lb n="28"/><anchor xml:id="D2.t1.a80s"/>cum nolit<anchor xml:id="D2.t1.a80e"/> ordinari in sacerdotem nisi fiat decanus, utrum simoniace <lb n="29"/>ordinetur.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="30"/>Et uidetur, tantum enim intuitu adipiscende dignitatis promouetur et <lb n="31"/>alias non ordinaretur, ergo simoniace ordinatur.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="32"/>Econtra: Iste <anchor xml:id="D2.t1.a15s"/>excusatur<anchor xml:id="D2.t1.a15e"/> consuetudine generali que est talis, immo <lb n="33"/><anchor xml:id="D2.t1.a16s"/>etiam<anchor xml:id="D2.t1.a16e"/> scripto iure quod taliter ordinationem posse fieri declarat, ut <lb n="34"/><seg type="allegationes" n="D.60 cc.1-3"><ref xml:id="D2.t1.all7" type="allegation" subtype="gratian" cRef="D.60 c.1" target="dg:0_658">di. lx. c. i.</ref>, <ref xml:id="D2.t1.all8" type="allegation" subtype="gratian" cRef="D.60 c.2" target="dg:0_659">ii.</ref> et <ref xml:id="D2.t1.all9" type="allegation" subtype="gratian" cRef="D.60 c.3" target="dg:0_660">iii.</ref></seg> Si de iure taliter potest ordinari, ergo iuste, ergo <lb n="35"/>bene, ergo sine peccato, ut <ref xml:id="D2.t1.all10" type="allegation" subtype="gratian" cRef="C.14 q.4 c.11" target="dg:2_2191">xiiii. Q. iiii. Quid dicam</ref>.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="36"/>Solutio: Cum de intentione solus <name type="divine" ref="#deus">Deus</name> iudicet honesta uidetur pro<lb n="37" break="no"/>motio quoad exteriorem speciem, cum alioquin uniuersalis ecclesia de<lb n="38" break="no"/>linqueret.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="4" xml:id="D2.t1.q4">
+            <div type="queritur" facs="#D2.t1.q4.P">
+              <p><lb n="39"/><label>q.4</label> Item queritur utrum uendere sententiam sit simonia.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="40"/>Et uidetur quia sic uenditur iustitia que uirtus est et ita res quasi <lb n="41"/>spiritualis uenditur; unde committitur simonia.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="42"/><anchor xml:id="D2.t1.a17s"/>Econtra<anchor xml:id="D2.t1.a17e"/>: Sententia hec nec est spiritualis, nec sacra, <anchor xml:id="D2.t1.a18s"/>nec sacre<anchor xml:id="D2.t1.a18e"/> rei ad<lb n="43" break="no"/>nexa, ergo eam uendere non est simonia.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="44"/>Solutio: Non est simonia, est tamen enorme crimen, ut <ref xml:id="D2.t1.all11" type="allegation" subtype="gratian" cRef="C.14 q.5 c.15" target="dg:2_2208">xiiii. Q. v. Non <lb n="45"/>sane</ref>. Set quid de sententia lata super re spirituali? Resp.: Hic credo <lb n="46"/>esse simoniam, cum uendita sententia per medium res adiudicata uendi <lb n="47"/>intelligatur, arg. <ref xml:id="D2.t1.all12" type="allegation" subtype="gratian" cRef="C.1 q.1 c.124" target="dg:1_1203">i. Q. i. Nullus episcopus</ref>, antepenultimum capitulum <lb n="48"/>est.</p>
+            </div>
+          </div>
+          <pb ed="#ed2021" n="3"/>
+
+          <div type="quaestio" n="5" xml:id="D2.t1.q5">
+            <div type="queritur" facs="#D2.t1.q5.P">
+              <p><lb n="49"/><anchor xml:id="D2.t1.f1s"/><label>q.5</label> Item queritur utrum matrimonium emere sit simonia.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="50"/>Et uidetur quia matrimonium est magnum <anchor xml:id="D2.t1.a19s"/>in <name type="divine" ref="#christus">Christo</name> et ecclesia <lb n="51"/>sacramentum<anchor xml:id="D2.t1.a19e"/> et <quote xml:id="D2.t1.zit3" source="#D2.t1.all13">est coniunctio spiritualis</quote>, ut <ref xml:id="D2.t1.all13" type="allegation" subtype="gratian" cRef="C.27 q.2 c.36" target="dg:3_3148">xxvii. Q. ii. In omni</ref>, ergo <lb n="52"/>illud uendere est simonia. Set qualiter potest uendi? Puta per con<lb n="53" break="no"/>sensum pretio intercedente qui solus est effectus matrimonii, ut <ref xml:id="D2.t1.all14" type="allegation" subtype="gratian" cRef="C.27 q.2 c.2" target="dg:3_3114">xxvii. <lb n="54"/>Q. ii. Sufficiat</ref>.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="55"/>Econtra: In ueteri testamento reperitur matrimonium fuisse emptum, <lb n="56"/>ut <ref xml:id="D2.t1.all15" type="allegation" subtype="gratian" cRef="C.32 q.2 c.13" target="dg:3_3292">xxxii. Q. ii. Honorantur</ref>. Quod quidem si esset peccatum et preterea <lb n="57"/>matrimonium ita significat rem sacram quod eam non efficit, set nec <lb n="58"/><anchor xml:id="D2.t1.a20s"/>confertur gratia<anchor xml:id="D2.t1.a20e"/>, ut <ref xml:id="D2.t1.all16" type="allegation" subtype="gratian" cRef="C.32 q.2 c.4" target="dg:3_3283">xxxii. <anchor xml:id="D2.t1.a21s"/>Q. ii.<anchor xml:id="D2.t1.a21e"/> Conubia</ref>. Et ita non uidetur illud emere <lb n="59"/>simonia.<anchor xml:id="D2.t1.f1e"/></p>
+            </div>
+            <div type="solutio">
+              <p><lb n="60"/>Solutio: Secundum <persName xml:id="D2.t1.pers2" ref="#gandulphus"><anchor xml:id="D2.t1.a22s"/>G.<anchor xml:id="D2.t1.a22e"/></persName> simonia esset, secundum alios nequaquam, et <lb n="61"/>hoc uidetur uerius.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="6" xml:id="D2.t1.q6">
+            <div type="queritur" facs="#D2.t1.q6.P">
+              <p><lb n="62"/><anchor xml:id="D2.t1.f2s"/><label>q.6</label> Item <anchor xml:id="D2.t1.a23s"/>queritur<anchor xml:id="D2.t1.a23e"/> utrum si quid detur episcopo ut aliquid omittat <lb n="63"/>agere circa spiritualia, committatur simonia.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="64"/>Et uidetur quia <persName xml:id="D2.t1.pers3" ref="#euthemius"><anchor xml:id="D2.t1.a24s"/>Euthenius<anchor xml:id="D2.t1.a24e"/></persName> et <persName xml:id="D2.t1.pers4" ref="#thomas">Thomas</persName> simoniaci reputantur quia ob <lb n="65"/><anchor xml:id="D2.t1.a25s"/>munus<anchor xml:id="D2.t1.a25e"/> ab episcopi accusatione <anchor xml:id="D2.t1.a27s"/>destiterunt<anchor xml:id="D2.t1.a27e"/>, ut <ref xml:id="D2.t1.all17" type="allegation" subtype="gratian" cRef="C.2 q.3 c.7" target="dg:1_1323">ii. Q. iii. <anchor xml:id="D2.t1.a26s"/>Euthemium<anchor xml:id="D2.t1.a26e"/></ref>, set <lb n="66"/><anchor xml:id="D2.t1.a28s"/>accusatio huiusmodi<anchor xml:id="D2.t1.a28e"/> est quasi spiritualis, cum ex ea sequatur depositio <lb n="67"/>que est spiritualis, <anchor xml:id="D2.t1.a29s"/>ergo<anchor xml:id="D2.t1.a29e"/> dare aliquid ut omittatur aliquid <anchor xml:id="D2.t1.a30s"/>agi<anchor xml:id="D2.t1.a30e"/> circa <lb n="68"/>spiritualia est simonia. Item dare episcopo ut suspensionem alicui <lb n="69"/>relaxet est simonia, ut <ref xml:id="D2.t1.all18" type="allegation" subtype="gratian" cRef="C.1 q.1 c.124" target="dg:1_1203"><anchor xml:id="D2.t1.a31s"/>i. Q. i. c. antepenult.<anchor xml:id="D2.t1.a31e"/></ref> Set hoc est dari ut <lb n="70"/>omittatur uel haberi permittatur, ergo in hoc casu simonia committitur.<anchor xml:id="D2.t1.f2e"/></p>
+            </div>
+            <div type="econtra">
+              <p><lb n="71"/>Econtra: Licite datur ut agi omittatur uel haberi permittatur in <lb n="72"/>electione, ut <ref xml:id="D2.t1.all19" type="allegation" subtype="gratian" cRef="D.63 c.21" target="dg:0_706">lxiii. di. Agatho</ref>; item in serui ordinatione, ut <seg type="allegationes" n="D.54 cc.12,9"><ref xml:id="D2.t1.all20" type="allegation" subtype="gratian" cRef="D.54 c.12" target="dg:0_605">di. liiii. <lb n="73"/>Generalis</ref>, <ref xml:id="D2.t1.all21" type="allegation" subtype="gratian" cRef="D.54 c.9" target="dg:0_602">Ex antiquis</ref></seg>; in quauis spiritualium inquietatione, ut <ref xml:id="D2.t1.all22" type="allegation" subtype="gratian" cRef="C.23 q.8 c.22" target="dg:2_2850">xxiii. <lb n="74"/>Q. ult. Tributum</ref>; in <anchor xml:id="D2.t1.a32s"/>relaxanda<anchor xml:id="D2.t1.a32e"/> suspensione, ut <seg type="allegationes" n="C.11 q.1 cc.42,43"><ref xml:id="D2.t1.all23" type="allegation" subtype="gratian" cRef="C.11 q.1 c.42" target="dg:1_1887">xi. Q. i. <anchor xml:id="D2.t1.a33s"/>Inolita<anchor xml:id="D2.t1.a33e"/></ref>, <ref xml:id="D2.t1.all24" type="allegation" subtype="gratian" cRef="C.11 q.1 c.43" target="dg:1_1888">Placuit</ref></seg>.</p>
+            </div>
+            <pb ed="#ed2021" n="4"/>
+            <div type="solutio">
+              <p><lb n="75"/>Solutio: Secundum quosdam numquam committitur simonia in <lb n="76"/>omittendo. Nec <persName xml:id="D2.t1.pers5" ref="#euthemius"><anchor xml:id="D2.t1.a34s"/>Euthemius<anchor xml:id="D2.t1.a34e"/></persName> ideo censetur simoniacus quia destitit, set <lb n="77"/>quia munus spirituale excepit. Igitur simoniacus <anchor xml:id="D2.t1.a35s"/>non<anchor xml:id="D2.t1.a35e"/> fuit <anchor xml:id="D2.t1.a36s"/>ex culpa<anchor xml:id="D2.t1.a36e"/><pb ed="#P" n="61r" facs="#P-f123"/><cb ed="#P" n="61ra"/> <lb n="78"/><anchor xml:id="D2.t1.a37s"/>destitutionis<anchor xml:id="D2.t1.a37e"/> set ex qualitate muneris. Set nec in illo <anchor xml:id="D2.t1.a38s"/>capitulo <ref xml:id="D2.t1.all25" type="allegation" subtype="gratian" rend="signum" cRef="C.2 q.3 c.7" n="C.2 q.3 c.7" target="dg:1_1323">Ↄ</ref><anchor xml:id="D2.t1.a38e"/> aliquid <lb n="79"/>omittitur set faciendum inhibetur, ne scilicet restituatur officium. <lb n="80"/><anchor xml:id="D2.t1.f3s"/>Suspensio ergo inflicta non potest redimi. Set quid de infligenda? <anchor xml:id="D2.t1.a39s"/>Resp.: <lb n="81"/><anchor xml:id="D2.t1.a40s"/>Secundum <persName xml:id="D2.t1.pers6" ref="#stephanus">S.</persName><anchor xml:id="D2.t1.a40e"/> quelibet infligenda<anchor xml:id="D2.t1.a39e"/> potest redimi, arg. <ref xml:id="D2.t1.all26" type="allegation" subtype="gratian" cRef="D.50 c.37" target="dg:0_550">di. l. Clerico</ref>. <lb n="82"/>Secundum <!-- Name „h.“ nicht aufgelöst (Quellenapparat: non invenimus bzw. offen) --><anchor xml:id="D2.t1.a41s"/><persName xml:id="D2.t1.pers7">h.</persName> et<anchor xml:id="D2.t1.a41e"/> <anchor xml:id="D2.t1.a42s"/>iniusta suspensio<anchor xml:id="D2.t1.a42e"/> infligenda potest redimi; secus de <lb n="83"/>iusta. Nec in primo casu <anchor xml:id="D2.t1.a43s"/>dicitur suspensionis redemptio, set iniuriarum <lb n="84"/>liberatio<anchor xml:id="D2.t1.f3e"/>, quo solo casu<anchor xml:id="D2.t1.a43e"/> circa spiritualia ut iniuste <anchor xml:id="D2.t1.a44s"/>agi<anchor xml:id="D2.t1.a44e"/> omittatur, licite <lb n="85"/>datur.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="7" xml:id="D2.t1.q7">
+            <div type="queritur" facs="#D2.t1.q7.P">
+              <p><lb n="86"/><label>q.7</label> Item queritur utrum super decimis liceat transigere.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="87"/>Et uidetur, arg. <seg type="allegationes"><ref xml:id="D2.t1.all27" type="allegation" subtype="extra" cRef="JL 14191; WH 995; App. 28.3; 1 Comp. 1.27.2 (X 1.36.2)">in extra. de pactionibus licitis Statuimus</ref>, <ref xml:id="D2.t1.all28" type="allegation" subtype="extra" cRef="JL 13868; WH 207; App. 28.5; 1 Comp. 1.27.3 (X 1.36.3)">Contingit</ref></seg>.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="88"/>Econtra: Transactio rei iudicate auctoritatem obtinet, set adiudicare <lb n="89"/>alicui decimas sub obtentu muneris <anchor xml:id="D2.t1.a45s"/>hoc est simonia<anchor xml:id="D2.t1.a45e"/>, quia hoc esset <lb n="90"/>emere, nec ergo super eis licet transigi. Item uenditio et transactio <lb n="91"/>equis passibus ambulant, ut <ref xml:id="D2.t1.all29" type="allegation" subtype="gratian" cRef="C.10 q.2 c.1" target="dg:1_1825">x. Q. ii. Casellas</ref>. Set non permittitur uen<lb n="92" break="no"/>ditio, ergo nec transactio. Item super expensis <anchor xml:id="D2.t1.a46s"/>factis in lite de decimis<anchor xml:id="D2.t1.a46e"/> <lb n="93"/>non licet transigere, ut <seg type="allegationes"><ref xml:id="D2.t1.all30" type="allegation" subtype="extra" cRef="JL 13924; WH 294; App. 28.2; 1 Comp. 1.26.4 (X 1.35.4)"><anchor xml:id="D2.t1.a47s"/>in<anchor xml:id="D2.t1.a47e"/> extra. de pactionibus licitis Cum pridem</ref>, <lb n="94"/><ref xml:id="D2.t1.all31" type="allegation" subtype="extra" cRef="JL 14103; WH 173; App. 28.6; 1 Comp. 1.27.4 (X 1.36.4)">Constitutus</ref></seg>, ergo longe minus super ipsis decimis.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="95"/>Solutio: Secundum <!-- Name „S.“ nicht aufgelöst (Quellenapparat: non invenimus bzw. offen) --><persName xml:id="D2.t1.pers8"><anchor xml:id="D2.t1.a48s"/>S.<anchor xml:id="D2.t1.a48e"/></persName> in eo solo casu licita est transactio, ubi is qui eas <lb n="96"/>detinet contumaciter <anchor xml:id="D2.t1.a49s"/>renuit satisfacere<anchor xml:id="D2.t1.a49e"/> et constat de iure petitoris. Quo <lb n="97"/>casu aliquid licite datur, alias autem nequaquam.</p>
+            </div>
+          </div>
+          <pb ed="#ed2021" n="5"/>
+
+          <div type="quaestio" n="8" xml:id="D2.t1.q8">
+            <div type="queritur" facs="#D2.t1.q8.P">
+              <p><lb n="98"/><anchor xml:id="D2.t1.f4s"/><label>q.8</label> Item posito quod aliquis dederit certam pecuniam episcopo, qui <lb n="99"/>consueuit prebendas dare indignis, ea conditione ut dignis conferret, et <lb n="100"/>si indigne conferret esset locus repetitioni, queritur si conferat digno <lb n="101"/>utrum simonia committatur.<anchor xml:id="D2.t1.f4e"/></p>
+            </div>
+            <div type="videtur">
+              <p><lb n="102"/>Et uidetur quia tantum metu amittende pecunie confert, ergo amore <lb n="103"/>pecunie, ergo simoniace. Et si hoc, ergo magis peccat conferendo digno, <lb n="104"/>quia <anchor xml:id="D2.t1.a50s"/>simoniace<anchor xml:id="D2.t1.a50e"/>, quam indigno, ubi simonia non interuenit.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="105"/>Econtra: Isti confert sub nulla pactione. Set nec pro huius collatione <lb n="106"/>aliquid spiritualiter suscepit uel est percepturus, ergo simoniam non <lb n="107"/>committit.</p>
+            </div>
+            <div type="queritur">
+              <p><lb n="108"/><anchor xml:id="D2.t1.f5s"/>Set queritur utrum sit locus repetitioni.<anchor xml:id="D2.t1.f5e"/></p>
+            </div>
+            <div type="videtur">
+              <p><lb n="109"/>Et uidetur quod confert sub certa pactione et obtentu pecunie, ergo <lb n="110"/>indigne confert, ergo non est conditioni paritum, ergo locus <anchor xml:id="D2.t1.a51s"/>est<anchor xml:id="D2.t1.a51e"/> re<lb n="111" break="no"/>petitioni.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="112"/><anchor xml:id="D2.t1.a52s"/>Econtra<anchor xml:id="D2.t1.a52e"/>: Si omni eo modo confert quo conuenit, ergo conditioni paret. <lb n="113"/>Set omni eo modo confert quia digno prout conuenit, ergo conditioni <lb n="114"/>paruit, ergo non est locus repetitioni.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="115"/>Solutio prima: Secundum quosdam collatio talis est simonia non ex <lb n="116"/>persona eius cui confertur, non ex natura ipsius collationis, set ex ipsa <lb n="117"/>praua intentione conferentis. Vel melius: Si facta est in generali <lb n="118"/>conuentio, non est simonia; si super prebenda specificata uel persona <lb n="119"/>nominata, simonia fuit per simile eius quod dicitur de coniuratione que <lb n="120"/>in generali facta est licita, secus si super re specificata.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="121"/>In secunda dicatur <anchor xml:id="D2.t1.a53s"/>non<anchor xml:id="D2.t1.a53e"/> esse locum repetitoni, cum secundum <lb n="122"/>utramque solutionum premissarum sit paritum conditioni.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="9" xml:id="D2.t1.q9">
+            <div type="queritur" facs="#D2.t1.q9.P">
+              <p><lb n="123"/><anchor xml:id="D2.t1.f6s"/><label>q.9</label> Item queritur utrum aliquo casu prebenda possit alicui conferri <lb n="124"/>sub conditione sine metu simonie.<anchor xml:id="D2.t1.f6e"/></p>
+            </div>
+            <div type="videtur">
+              <p><lb n="125"/>Et uidetur: Esto Iudeus paciscitur cum episcopo se conuersurum ad <lb n="126"/>fidem, si uelit episcopus sibi dare beneficium. Conuertitur, confertur <lb n="127"/>sibi beneficium, queritur utrum simoniace.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="128"/>Et non uidetur quia in baptismate omnia peccata sunt ei dimissa et <lb n="129"/>inter alia simonia, quia super ea sufficienter fuerit contritus. Et secun<lb n="130" break="no"/>dum quosdam peccata dimissa in baptismate non redeunt, ergo cum <lb n="131"/>nichil fuerit impedimento nisi simonia quominus ista collatio censeatur <lb n="132"/>canonica nec ea modo impediat, constat esse canonicam.</p>
+            </div>
+            <pb ed="#ed2021" n="6"/>
+            <div type="econtra">
+              <p><lb n="133"/>Econtra: Ex conuentione confertur que facit simoniam, ut <ref xml:id="D2.t1.all32" type="allegation" subtype="gratian" cRef="C.1 q.2 c.2" target="dg:1_1212">i. Q. ii. <lb n="134"/>Quam pio</ref>, ergo simoniaca est.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="135"/>Solutio: Simoniaca est quia constat si peccata dimissa in baptismate <lb n="136"/>redeant, si non redeant, idem est; propter ingratitudinem enim scin<lb n="137" break="no"/>tillula que remanserit statim accenditur.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="10" xml:id="D2.t1.q10">
+            <div type="queritur" facs="#D2.t1.q10.P">
+              <p><lb n="138"/><label>q.10</label> Item queritur utrum Iudeus sit ad fidem attrahendus sub <lb n="139"/>obtentu muneris.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="140"/>Et uidetur quia debet homo alium ad fidem adducere quomodolibet <lb n="141"/>potest, etiam <quote xml:id="D2.t1.zit4" source="#D2.t1.all33">consolatione beneficentie</quote>, ut <ref xml:id="D2.t1.all33" type="allegation" subtype="gratian" cRef="C.23 q.4 c.53" target="dg:2_2766"><anchor xml:id="D2.t1.a54s"/>xxiii.<anchor xml:id="D2.t1.a54e"/> Q. iiii. c. penult.</ref> Item <lb n="142"/>Iudeis conuersis permittitur haberi pecunia usuraria, ut alii facilius ad <lb n="143"/>fidem attrahantur, ut <ref xml:id="D2.t1.all34" type="allegation" subtype="extra" cRef="3 Conc. Lat. (1179) c.26; cf. 1 Comp. 5.5.5 (X 5.6.5)">in extra. ex concilio Romano Iudei</ref>. Ergo uidetur <lb n="144"/>quod aliquis obtentu muneris possit ad fidem adduci. Item Christiana <lb n="145"/>mulier licite contrahit cum Iudeo sponsalia ea conditione ut conuer<lb n="146" break="no"/>tatur, ut <ref xml:id="D2.t1.all35" type="allegation" subtype="gratian" cRef="C.28 q.1 c.16" target="dg:3_3181">xxviii. Q. <anchor xml:id="D2.t1.a55s"/>i.<anchor xml:id="D2.t1.a55e"/> Non oportet</ref>; ergo sub obtentu muneris ad fidem <lb n="147"/>potest prouocari.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="148"/>Econtra: Nec apostolum nec aliquem<cb ed="#P" n="61rb"/> eorum successorem legimus sub <lb n="149"/>obtentu muneris aliquem prouocasse ad <name type="divine" ref="#deus">Dei</name> cultum, ut <ref xml:id="D2.t1.all36" type="allegation" subtype="gratian" cRef="C.1 q.2 c.2" target="dg:1_1212">i. Q. ii. Quam <lb n="150"/>pio</ref>; ergo eorum exemplo nemo ita est prouocandus.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="151"/>Solutio: Quidam <anchor xml:id="D2.t1.a56s"/>dicunt<anchor xml:id="D2.t1.a56e"/> licite posse; credo magis non debere. Et <lb n="152"/>loquitur capitulum illud <ref xml:id="D2.t1.all37" type="allegation" subtype="gratian" rend="signum" cRef="C.23 q.4 c.53" n="capitulum illud ꝯ· sc. C.23 q.4 c.53" target="dg:2_2766"><anchor xml:id="D2.t1.a57s"/>ꝯ·<anchor xml:id="D2.t1.a57e"/></ref> de his qui bonum susceptum deserunt qui <lb n="153"/>quoquomodo possunt cogi. Et illud capitulum <ref xml:id="D2.t1.all38" type="allegation" subtype="extra" rend="signum" cRef="3 Conc. Lat. c.26; cf. 1 Comp. 5.5.5 (X 5.6.5)" n="illud capitulum ·o· sc. 3 Conc. Lat. c.26; cf. 1 Comp. 5.5.5 (X 5.6.5)"><anchor xml:id="D2.t1.a58s"/>·o·<anchor xml:id="D2.t1.a58e"/></ref> intelligo ut dicatur <lb n="154"/>illud quod ibi subiungitur causam non notat <anchor xml:id="D2.t1.a59s"/>set<anchor xml:id="D2.t1.a59e"/> consecutionem; alio<lb n="155" break="no"/>quin simonia committeretur. Illud autem capitulum <ref xml:id="D2.t1.all39" type="allegation" subtype="gratian" rend="signum" cRef="C.28 q.1 c.16" n="Illud – J. sc. C.28 q.1 c.16" target="dg:3_3181"><sic><anchor xml:id="D2.t1.a60s"/>J.<anchor xml:id="D2.t1.a60e"/></sic></ref> arg. est in<lb n="156" break="no"/>sufficiens uel ad rem non faciens.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="11" xml:id="D2.t1.q11">
+            <div type="queritur" facs="#D2.t1.q11.P">
+              <p><lb n="157"/><anchor xml:id="D2.t1.f7s"/><label>q.11</label> Item queritur utrum, si pater aquam non habeat nec sacerdos <lb n="158"/>uelit dare nisi pro munere et filius iam in exstasi sit moriturus sine <lb n="159"/>baptismate, utrum possit aliquid dare.<anchor xml:id="D2.t1.f7e"/></p>
+            </div>
+            <div type="videtur">
+              <p><lb n="160"/>Et uidetur quod de puero desperatur de ipso spes habetur quod possit <lb n="161"/>penitere, quia de nemine <quote xml:id="D2.t1.zit5" source="#D2.t1.all40">est desperandus dum</quote> superest in hac uita, ut <lb n="162"/><ref xml:id="D2.t1.all40" type="allegation" subtype="gratian" cRef="C.32 q.2 c.11" target="dg:3_3290">xxxii. Q. ii. Ancillam</ref>, ergo maius dampnum uitari debet, ut <ref xml:id="D2.t1.all41" type="allegation" subtype="gratian" cRef="D.13 c.2" target="dg:0_115">di. xiii. <lb n="163"/>Nerui</ref>.</p>
+            </div>
+            <pb ed="#ed2021" n="7"/>
+            <div type="econtra">
+              <p><lb n="164"/>Econtra: Nemo etiam minimum mortale eligere <anchor xml:id="D2.t1.a61s"/>debet<anchor xml:id="D2.t1.a61e"/> ut <anchor xml:id="D2.t1.a62s"/>proximo<anchor xml:id="D2.t1.a62e"/> <lb n="165"/>declinet enorme, ut <ref xml:id="D2.t1.all42" type="allegation" subtype="gratian" cRef="D.14 c.1" target="dg:0_117">xiiii. di. c. i.</ref> Item ordinata est caritas ut suam sa<lb n="166" break="no"/>lutem aliorum saluti <anchor xml:id="D2.t1.a63s"/>preferat<anchor xml:id="D2.t1.a63e"/>. Vnde in hoc casu non debet simoniam <lb n="167"/>committere ut filius saluetur.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="168"/>Solutio: Secundum <persName xml:id="D2.t1.pers9" ref="#gandulphus">G.</persName> simoniam in hoc casu committi debere, secun<lb n="169" break="no"/>dum alios nequaquam, et hoc sanius.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="12" xml:id="D2.t1.q12">
+            <div type="queritur" facs="#D2.t1.q12.P">
+              <p><lb n="170"/><anchor xml:id="D2.t1.f8s"/><label>q.12</label> Item queritur utrum <persName xml:id="D2.t1.pers10" ref="#iudas">Iudas</persName> uendendo <name type="divine" ref="#christus"><anchor xml:id="D2.t1.a64s"/>Christum<anchor xml:id="D2.t1.a64e"/></name> <anchor xml:id="D2.t1.a65s"/>commiserit<anchor xml:id="D2.t1.a65e"/> <lb n="171"/>simoniam.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="172"/>Et uidetur quia ipse fuit sacre rei signum, immo annexum, ergo id <lb n="173"/>uendere fuit simonia.<anchor xml:id="D2.t1.f8e"/></p>
+            </div>
+            <div type="econtra">
+              <p><lb n="174"/>Econtra: Corpus ipsius adhuc fuit mortale, passibile, ergo non erat <lb n="175"/>simonia ipsum uendere, sicut nec si alius communis homo uenderetur. <lb n="176"/>Similiter solet queri utrum sit simonia uendere sacerdotem.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="177"/>Solutio: Placet quibusdam fuisse simonia, licet quidam dicant fuisse <lb n="178"/>tantum crimen plagii. De sacerdote dici potest, quia si uendatur ad <lb n="179"/>sacrum ministerium simonia committitur, secus si ad alia.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="13" xml:id="D2.t1.q13">
+            <div type="queritur" facs="#D2.t1.q13.P">
+              <p><lb n="180"/><label>q.13</label> Item posito quod aliquis promittat aliquid episcopo cum tamen <lb n="181"/>dandi intentionem non habeat ut ordinet filium, queritur utrum sit si<lb n="182" break="no"/>moniacus.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="183"/><anchor xml:id="D2.t1.f9s"/>Et non uidetur quia <quote xml:id="D2.t1.zit6">simonia est studiosa uoluntas emendi uel uen<lb n="184" break="no"/>dendi</quote> <anchor xml:id="D2.t1.a66s"/>etcetera<anchor xml:id="D2.t1.a66e"/>. Set iste non habet uoluntatem emendi, ergo non est<anchor xml:id="D2.t1.f9e"/> <lb n="185"/>simoniacus.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="186"/>Econtra: Promittit se daturum, ergo quoad ecclesiam censeri debet <lb n="187"/>simoniacus, quia <quote xml:id="D2.t1.zit7">non est dubium eum <anchor xml:id="D2.t1.a67s"/>in legem<anchor xml:id="D2.t1.a67e"/> committere qui uerba <lb n="188"/>legis amplexus</quote> etcetera.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="189"/>Solutio: Precise simonia est.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="14" xml:id="D2.t1.q14">
+            <div type="queritur" facs="#D2.t1.q14.P">
+              <p><lb n="190"/><label>q.14</label> Item de conducticiis presbiteris solet queri utrum sint <lb n="191"/>simoniaci.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="192"/>Et uidetur quia uenditur spiritualibus adnexum suum ministerium, <lb n="193"/>igitur simoniaci sunt, nam et hii a iure inhibiti sunt, ut <ref xml:id="D2.t1.all43" type="allegation" subtype="gratian" cRef="C.21 q.2 c.5" target="dg:2_2575">xxi. Q. ii. c. ult.</ref></p>
+            </div>
+            <pb ed="#ed2021" n="8"/>
+            <div type="econtra">
+              <p><lb n="194"/>Econtra: Vendunt laborem quod licet <anchor xml:id="D2.t1.a68s"/>per simile<anchor xml:id="D2.t1.a68e"/> eius quod dicitur de <lb n="195"/>episcopo uisitante parochias, ut <ref xml:id="D2.t1.all44" type="allegation" subtype="gratian" cRef="C.10 q.3 c.9" target="dg:1_1842">x. Q. iii. Relatum</ref>.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="196"/>Solutio: Si ex certa constituuntur mercede, simoniaci sunt; ceterum si <lb n="197"/>uictus sibi constituatur, non eque.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="15" xml:id="D2.t1.q15">
+            <div type="queritur" facs="#D2.t1.q15.P">
+              <p><lb n="198"/><label>q.15</label> Queri potest de firmis utrum sit simonia firmam constituere <lb n="199"/>in ecclesiis.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="200"/>Et uidetur quia ita aliquam administrationem adquirit sub munere, <lb n="201"/>ergo est simoniacus, ut <ref xml:id="D2.t1.all45" type="allegation" subtype="gratian" cRef="C.1 q.3 c.8" target="dg:1_1229">i. Q. iii. <anchor xml:id="D2.t1.a69s"/>Saluator<anchor xml:id="D2.t1.a69e"/></ref>. Item inhibite sunt a iure <lb n="202"/>huiusmodi firme, ut <ref xml:id="D2.t1.all46" type="allegation" subtype="extra" cRef="Conc. Turon. 1163 c.3; App. 2.10; 1 Comp. 5.2.7 (X 5.3.8)">in extra. de simonia Non satis</ref>. Item ius emit <lb n="203"/>percipiendi fructus spirituales, etsi sit <anchor xml:id="D2.t1.a70s"/>temporale<anchor xml:id="D2.t1.a70e"/>, ergo simoniam <lb n="204"/>commisit.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="205"/>Econtra: Fructus tantum emit et hoc est licitum, ergo non commisit <lb n="206"/>simoniam; alioquin nil de fructibus posset uendi, quod esset incon<lb n="207" break="no"/>ueniens. Item huiusmodi firme sunt generali <anchor xml:id="D2.t1.a71s"/>usu<anchor xml:id="D2.t1.a71e"/> ecclesie approbate, <lb n="208"/>tacito consensu pape confirmate, ergo licite; immo a iure etiam sunt <lb n="209"/>corroborate, ut <ref xml:id="D2.t1.all47" type="allegation" subtype="extra" cRef="JL 13910; WH 783; App. 28.1; 1 Comp. 5.3.4 (X 5.4.4)">in extra. <anchor xml:id="D2.t1.a72s"/>de pactionibus licitis<anchor xml:id="D2.t1.a72e"/> c. i.</ref></p>
+            </div>
+            <div type="solutio">
+              <p><lb n="210"/>Solutio: Si de iure uis respondere concedas esse simoniam, si de con<lb n="211" break="no"/>suetudine secus; peccatum tamen est grande quod tamen <anchor xml:id="D2.t1.a73s"/>toleratur<anchor xml:id="D2.t1.a73e"/> <lb n="212"/>ratione multitudinis, nec excusat a culpa, etsi <anchor xml:id="D2.t1.a74s"/>releuet<anchor xml:id="D2.t1.a74e"/> a pena.</p>
+            </div>
+          </div>
+
+          <div type="quaestio" n="16" xml:id="D2.t1.q16">
+            <div type="queritur" facs="#D2.t1.q16.P">
+              <p><lb n="213"/><label>q.16</label> Item queritur de eo qui cum munere ingressus est monas<lb n="214" break="no"/>terium utrum <anchor xml:id="D2.t1.a75s"/>debeat<anchor xml:id="D2.t1.a75e"/> expelli.</p>
+            </div>
+            <div type="videtur">
+              <p><lb n="215"/>Et uidetur quod autenticam penitentiam non legimus nisi dimiserit <lb n="216"/>dignitatem seu locum emptum, ut <seg type="allegationes"><ref xml:id="D2.t1.all48" type="allegation" subtype="gratian" cRef="C.1 q.1 c.115" target="dg:1_1194">i. Q. i. <anchor xml:id="D2.t1.a76s"/>Si quis neque</ref>, <ref xml:id="D2.t1.all49" type="allegation" subtype="gratian" cRef="C.1 q.5 c.1" target="dg:1_1252">Q. v.<anchor xml:id="D2.t1.a76e"/> c. i.</ref></seg> Ergo <lb n="217"/>si uult saluari, locum deserere <anchor xml:id="D2.t1.a77s"/>debet<anchor xml:id="D2.t1.a77e"/>.</p>
+            </div>
+            <div type="econtra">
+              <p><lb n="218"/>Econtra: Tale commisit peccatum cuius pretextu dignus <anchor xml:id="D2.t1.a78s"/>est<anchor xml:id="D2.t1.a78e"/> detrudi in <lb n="219"/>monasterium, ut <ref xml:id="D2.t1.all50" type="allegation" subtype="gratian" cRef="C.1 q.1 c.7" n="C.1 q.1 sc. c.7" target="dg:1_1086">i. Q. i.</ref> Set nec est districtius in quo retrudi possit, <lb n="220"/>ergo in istud retrudi debet et sic non amittet locum emptum.</p>
+            </div>
+            <div type="solutio">
+              <p><lb n="221"/>Solutio: Dici potest in eodem posse retrudi qui nichilominus locum <lb n="222"/>emptum amittit. Nec enim ibi erit ut frater, set potius ut in ergastulum <lb n="223"/>detrusus, et ita amittit quod ibi habebat honoris <anchor xml:id="D2.t1.a79s"/>eis que sunt oneris <lb n="224"/>remanentibus<anchor xml:id="D2.t1.a79e"/>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+
+    <back>
+      <!-- ===== Textkritischer Apparat ===== -->
+      <div type="apparatus" subtype="criticus">
+        <listApp>
+          <app from="#D2.t1.a1s" to="#D2.t1.a1e" n="tit.">
+            <lem>de simonia</lem>
+            <witDetail wit="#P" type="spatium">14 linearum spatium praem. P fol. 60va</witDetail>
+            <rdg wit="#P" type="marg">De simonia<note>marg. fol. 60vb</note></rdg>
+            <rdg wit="#D">De symonia<note>supra in lin. (rubr.) et marg. fol. 14rb</note></rdg>
+          </app>
+          <app from="#D2.t1.a2s" to="#D2.t1.a2e" n="6">
+            <lem>§ Notandum</lem>
+            <rdg wit="#Z">Set notandum<note type="editorial">forsan C.1 q.1 in p.c.39</note></rdg>
+            <rdg wit="#L">§ Iam itaque<note type="editorial">C.1 q.4 c.8</note></rdg>
+          </app>
+          <app from="#D2.t1.a3s" to="#D2.t1.a3e" n="7-8">
+            <lem>non est gratia – accipitur²</lem>
+            <witDetail wit="#P" type="marg">marg.</witDetail>
+          </app>
+          <app from="#D2.t1.a4s" to="#D2.t1.a4e" n="7-8">
+            <lem>ut – gratia¹</lem>
+            <rdg wit="#Z" type="om"/>
+          </app>
+          <app from="#D2.t1.a5s" to="#D2.t1.a5e" n="10">
+            <lem>non²</lem>
+            <rdg wit="#P" type="add">non potest</rdg>
+          </app>
+          <app from="#D2.t1.a6s" to="#D2.t1.a6e" n="10-13">
+            <lem>Set – conferri</lem>
+            <witDetail wit="#P" type="marg">marg.</witDetail>
+          </app>
+          <app from="#D2.t1.a7s" to="#D2.t1.a7e" n="10">
+            <lem>est</lem>
+            <rdg wit="#P" type="om"/>
+          </app>
+          <app from="#D2.t1.a8s" to="#D2.t1.a8e" n="11">
+            <lem wit="#P">⸫</lem>
+            <rdg wit="#L">.,</rdg>
+            <rdg wit="#La">:‧</rdg>
+            <rdg wit="#B">i. Q. i. c. i.</rdg>
+            <rdg wit="#Z" type="om"/>
+            <rdg wit="#D">i.</rdg>
+          </app>
+          <app from="#D2.t1.a9s" to="#D2.t1.a9e" n="11">
+            <lem>est</lem>
+            <rdg wit="#P" type="om"/>
+          </app>
+          <app from="#D2.t1.a10s" to="#D2.t1.a10e" n="13">
+            <lem>debet – conferri</lem>
+            <rdg wit="#La">potest debet gratiam conferri</rdg>
+            <rdgGrp>
+            <rdg wit="#Z">potest quod gratia confertur</rdg>
+            <rdg wit="#B">potest quod gratis gratia confertur<note>gratis praem. B</note></rdg>
+            </rdgGrp>
+          </app>
+          <app from="#D2.t1.a11s" to="#D2.t1.a11e" n="17">
+            <lem>prouenit</lem>
+            <rdg wit="#P">preuenit</rdg>
+          </app>
+          <app from="#D2.t1.a12s" to="#D2.t1.a12e" n="19">
+            <lem wit="#P">⸪</lem>
+            <rdg wit="#L">.;.</rdg>
+            <rdg wit="#La">:‧</rdg>
+            <rdg wit="#B">i. Q. i. c. i.</rdg>
+            <rdg wit="#Z #D" type="om"/>
+          </app>
+          <app from="#D2.t1.a13s" to="#D2.t1.a13e" n="24">
+            <lem>dicitur – episcopus</lem>
+            <rdg wit="#Z">utitur gratia vendita episcopi</rdg>
+          </app>
+          <app from="#D2.t1.a14s" to="#D2.t1.a14e" n="25">
+            <lem>hereticus dicitur polluere</lem>
+            <rdg wit="#Z">hereticus donec pollueret</rdg>
+          </app>
+          <app from="#D2.t1.a80s" to="#D2.t1.a80e" n="28">
+            <!-- Druck: kein Eintrag – Ergänzung des Herausgebers vom 01.11.2026 -->
+            <lem>cum nolit</lem>
+            <witDetail wit="#P" type="marg">marg.</witDetail>
+          </app>
+          <app from="#D2.t1.a15s" to="#D2.t1.a15e" n="32">
+            <lem>excusatur</lem>
+            <rdg wit="#P">excommunicatur</rdg>
+          </app>
+          <app from="#D2.t1.a16s" to="#D2.t1.a16e" n="33">
+            <lem>etiam</lem>
+            <rdg wit="#P #Z" type="om"/>
+          </app>
+          <app from="#D2.t1.a17s" to="#D2.t1.a17e" n="42">
+            <lem>Econtra</lem>
+            <rdg wit="#D">Item</rdg>
+          </app>
+          <app from="#D2.t1.a18s" to="#D2.t1.a18e" n="42">
+            <lem>nec sacre</lem>
+            <rdg wit="#P" type="om"/>
+          </app>
+          <app from="#D2.t1.a19s" to="#D2.t1.a19e" n="50-51">
+            <lem>in Christo – sacramentum</lem>
+            <rdg wit="#Z">sacramentum in ecclesia</rdg>
+          </app>
+          <app from="#D2.t1.a20s" to="#D2.t1.a20e" n="58">
+            <lem>confertur gratia</lem>
+            <rdg wit="#B">confert gratiam</rdg>
+          </app>
+          <app from="#D2.t1.a21s" to="#D2.t1.a21e" n="58">
+            <lem>Q. ii.</lem>
+            <rdg wit="#La #Z" type="om"/>
+          </app>
+          <app from="#D2.t1.a22s" to="#D2.t1.a22e" n="60">
+            <lem>G.</lem>
+            <rdg wit="#L">quosdam</rdg>
+          </app>
+          <app from="#D2.t1.a23s" to="#D2.t1.a23e" n="62">
+            <lem>queritur</lem>
+            <rdg wit="#P #La" type="om"/>
+          </app>
+          <app from="#D2.t1.a24s" to="#D2.t1.a24e" n="64">
+            <lem>Euthenius<note type="editorial">cf. an. 60 Friedb., Eufemium Friedb.</note></lem>
+            <rdg wit="#L">Ethenius</rdg>
+            <rdg wit="#La">Euthemius</rdg>
+            <rdg wit="#Z">Eleutherius</rdg>
+            <rdg wit="#B">Enthemius</rdg>
+            <rdg wit="#D">Euthenius</rdg>
+          </app>
+          <app from="#D2.t1.a25s" to="#D2.t1.a25e" n="65">
+            <lem>munus</lem>
+            <rdg wit="#P">minus</rdg>
+          </app>
+          <app from="#D2.t1.a26s" to="#D2.t1.a26e" n="65">
+            <lem>Euthemium<note type="editorial">cf. an. 60 Friedb., Eufemium Friedb.</note></lem>
+            <rdg wit="#L">Enthenium</rdg>
+            <rdg wit="#La #Z #B">Euthemium</rdg>
+            <rdg wit="#D">Euthenium</rdg>
+          </app>
+          <app from="#D2.t1.a27s" to="#D2.t1.a27e" n="65">
+            <lem>destiterunt</lem>
+            <rdg wit="#P">desistiterunt</rdg>
+          </app>
+          <app from="#D2.t1.a28s" to="#D2.t1.a28e" n="66">
+            <lem>accusatio huiusmodi</lem>
+            <rdg wit="#B">actio eius</rdg>
+          </app>
+          <app from="#D2.t1.a29s" to="#D2.t1.a29e" n="67">
+            <lem>ergo</lem>
+            <rdg wit="#B">Solutio</rdg>
+          </app>
+          <app from="#D2.t1.a30s" to="#D2.t1.a30e" n="67">
+            <lem>agi</lem>
+            <rdg wit="#B">uel agatur</rdg>
+          </app>
+          <app from="#D2.t1.a31s" to="#D2.t1.a31e" n="69">
+            <lem>i. Q. i. c. antepenult.</lem>
+            <rdg wit="#La">i. Q. in c. antepenult.</rdg>
+          </app>
+          <app from="#D2.t1.a32s" to="#D2.t1.a32e" n="74">
+            <lem>relaxanda</lem>
+            <rdg wit="#P #L">relaxandi</rdg>
+          </app>
+          <app from="#D2.t1.a33s" to="#D2.t1.a33e" n="74">
+            <lem wit="#L #D">Inolita</lem>
+            <rdg wit="#P #La #Z">Inclita</rdg>
+          </app>
+          <app from="#D2.t1.a34s" to="#D2.t1.a34e" n="76">
+            <lem>Euthemius<note type="editorial">cf. an. 60 Friedb., Eufemium Friedb.</note></lem>
+            <rdg wit="#L">Enthenius</rdg>
+            <rdg wit="#La">Euthemius</rdg>
+            <rdg wit="#Z">Euletherius</rdg>
+            <rdg wit="#B">Enthemius</rdg>
+            <rdg wit="#D">Euthenius</rdg>
+          </app>
+          <app from="#D2.t1.a35s" to="#D2.t1.a35e" n="77">
+            <lem>non</lem>
+            <rdg wit="#P">si</rdg>
+          </app>
+          <app from="#D2.t1.a36s" to="#D2.t1.a36e" n="77">
+            <lem>ex culpa</lem>
+            <rdg wit="#P" type="add">ex culpa de culpa</rdg>
+          </app>
+          <app from="#D2.t1.a37s" to="#D2.t1.a37e" n="78">
+            <lem wit="#L #Z #B">destitutionis</lem>
+            <rdg wit="#P #La">desitionis</rdg>
+          </app>
+          <app from="#D2.t1.a38s" to="#D2.t1.a38e" n="78">
+            <lem wit="#P">capitulo Ↄ</lem>
+            <rdg wit="#La">capitulo :¬</rdg>
+            <rdg wit="#D">S<hi rend="superscript">o</hi></rdg>
+            <rdg wit="#L #Z #B">capitulo</rdg>
+          </app>
+          <app from="#D2.t1.a39s" to="#D2.t1.a39e" n="80-81">
+            <lem>Resp. – infligenda</lem>
+            <rdg wit="#D" type="om"/>
+          </app>
+          <app from="#D2.t1.a40s" to="#D2.t1.a40e" n="81">
+            <lem wit="#La">Secundum S.</lem>
+            <rdg wit="#L">S.</rdg>
+            <rdg wit="#P" type="pc">secundum G</rdg>
+            <rdg wit="#Z">Secundum quemlibet</rdg>
+            <rdg wit="#B">scd’is</rdg>
+          </app>
+          <app from="#D2.t1.a41s" to="#D2.t1.a41e" n="82">
+            <lem wit="#P">h. et</lem>
+            <rdg wit="#L">et h.</rdg>
+            <rdg wit="#La">S. et h.</rdg>
+            <rdg wit="#Z">st’ in hunc</rdg>
+            <rdg wit="#B">S. et</rdg>
+            <rdg wit="#D">S. et h’</rdg>
+          </app>
+          <app from="#D2.t1.a42s" to="#D2.t1.a42e" n="82">
+            <lem>iniusta suspensio</lem>
+            <rdg wit="#B">iusta possessio</rdg>
+          </app>
+          <app from="#D2.t1.a43s" to="#D2.t1.a43e" n="83-84">
+            <lem>dicitur – casu</lem>
+            <witDetail wit="#P" type="marg">marg.</witDetail>
+          </app>
+          <app from="#D2.t1.a44s" to="#D2.t1.a44e" n="84">
+            <lem>agi</lem>
+            <rdg wit="#P">aget</rdg>
+            <rdg wit="#Z">coget</rdg>
+          </app>
+          <app from="#D2.t1.a45s" to="#D2.t1.a45e" n="89">
+            <lem>hoc est simonia</lem>
+            <rdg wit="#P" type="praem">et hoc est simonia</rdg>
+          </app>
+          <app from="#D2.t1.a46s" to="#D2.t1.a46e" n="92">
+            <lem>factis in lite de decimis</lem>
+            <rdg wit="#B">factis de decimis illicite</rdg>
+          </app>
+          <app from="#D2.t1.a47s" to="#D2.t1.a47e" n="93">
+            <lem>in</lem>
+            <rdg wit="#P">ita</rdg>
+          </app>
+          <app from="#D2.t1.a48s" to="#D2.t1.a48e" n="95">
+            <lem>S.</lem>
+            <rdg wit="#Z">quod</rdg>
+            <rdg wit="#D">G.</rdg>
+          </app>
+          <app from="#D2.t1.a49s" to="#D2.t1.a49e" n="96">
+            <lem>renuit satisfacere</lem>
+            <rdg wit="#B">retinuit satisfactionem</rdg>
+          </app>
+          <app from="#D2.t1.a50s" to="#D2.t1.a50e" n="104">
+            <lem>simoniace</lem>
+            <rdg wit="#P" type="add">peccat simoniace<note>peccat supra lin. P<hi rend="superscript">2</hi></note></rdg>
+          </app>
+          <app from="#D2.t1.a51s" to="#D2.t1.a51e" n="110">
+            <!-- Druck: „est] om. P“ (Editionsfehler); richtig: est supra lin. P² – Korrektur des Herausgebers vom 18.10.2026 -->
+            <lem>est</lem>
+            <witDetail wit="#P" type="supra">supra lin. P<hi rend="superscript">2</hi></witDetail>
+          </app>
+          <app from="#D2.t1.a52s" to="#D2.t1.a52e" n="112">
+            <lem>Econtra</lem>
+            <rdg wit="#D" type="om"/>
+          </app>
+          <app from="#D2.t1.a53s" to="#D2.t1.a53e" n="121">
+            <lem>non</lem>
+            <rdg wit="#P" type="om"/>
+          </app>
+          <app from="#D2.t1.a54s" to="#D2.t1.a54e" n="141">
+            <lem>xxiii.</lem>
+            <rdg wit="#P #Z">xxxiii.</rdg>
+          </app>
+          <app from="#D2.t1.a55s" to="#D2.t1.a55e" n="146">
+            <lem>i.</lem>
+            <rdg wit="#P">ii.</rdg>
+          </app>
+          <app from="#D2.t1.a56s" to="#D2.t1.a56e" n="151">
+            <lem wit="#L #D">dicunt</lem>
+            <rdg wit="#P #La #Z #B" type="om"/>
+          </app>
+          <app from="#D2.t1.a57s" to="#D2.t1.a57e" n="152">
+            <lem wit="#P">ꝯ·</lem>
+            <rdg wit="#La">ꝯ:</rdg>
+            <rdg wit="#Z">quia</rdg>
+            <rdg wit="#L #B #D" type="om"/>
+          </app>
+          <app from="#D2.t1.a58s" to="#D2.t1.a58e" n="153">
+            <lem wit="#P #La">·o·</lem>
+            <rdg wit="#L">primo primo</rdg>
+            <rdg wit="#Z">c.</rdg>
+            <rdg wit="#B #D" type="om"/>
+          </app>
+          <app from="#D2.t1.a59s" to="#D2.t1.a59e" n="154">
+            <lem wit="#B #D">set</lem>
+            <rdg wit="#P #La #Z" type="om"/>
+            <rdg wit="#L">uel</rdg>
+          </app>
+          <app from="#D2.t1.a60s" to="#D2.t1.a60e" n="155">
+            <lem wit="#P">J.</lem>
+            <rdg wit="#B">Iudei</rdg>
+            <rdg wit="#La #L #Z #D" type="om"/>
+          </app>
+          <app from="#D2.t1.a61s" to="#D2.t1.a61e" n="164">
+            <lem>debet</lem>
+            <rdg wit="#P #La" type="om"/>
+          </app>
+          <app from="#D2.t1.a62s" to="#D2.t1.a62e" n="164">
+            <lem type="coniectura">proximo<note type="editorial">coniecimus</note></lem>
+            <rdg wit="#P #La #L #Z #B #D">proximus<note type="editorial">mss.</note></rdg>
+          </app>
+          <app from="#D2.t1.a63s" to="#D2.t1.a63e" n="166">
+            <lem>preferat</lem>
+            <rdg wit="#P #La">proferat</rdg>
+          </app>
+          <app from="#D2.t1.a64s" to="#D2.t1.a64e" n="170">
+            <lem>Christum</lem>
+            <rdg wit="#Z">corpus Christi</rdg>
+          </app>
+          <app from="#D2.t1.a65s" to="#D2.t1.a65e" n="170">
+            <lem>commiserit</lem>
+            <rdg wit="#P #Z">commisit</rdg>
+          </app>
+          <app from="#D2.t1.a66s" to="#D2.t1.a66e" n="184">
+            <lem>etcetera</lem>
+            <rdg wit="#Z">spirituale</rdg>
+          </app>
+          <app from="#D2.t1.a67s" to="#D2.t1.a67e" n="187">
+            <lem>in legem</lem>
+            <rdg wit="#Z">in canonem</rdg>
+          </app>
+          <app from="#D2.t1.a68s" to="#D2.t1.a68e" n="194">
+            <lem>per simile</lem>
+            <rdg wit="#P" type="pc">possibile</rdg>
+          </app>
+          <app from="#D2.t1.a69s" to="#D2.t1.a69e" n="201">
+            <lem>Saluator</lem>
+            <rdg wit="#P" type="pc">Saluatur</rdg>
+          </app>
+          <app from="#D2.t1.a70s" to="#D2.t1.a70e" n="203">
+            <lem>temporale</lem>
+            <rdg wit="#P" type="praem">spirituale temporale</rdg>
+          </app>
+          <app from="#D2.t1.a71s" to="#D2.t1.a71e" n="207">
+            <lem>usu</lem>
+            <rdg wit="#Z">consuetudine</rdg>
+          </app>
+          <app from="#D2.t1.a72s" to="#D2.t1.a72e" n="209">
+            <!-- Druck: „de pact. li. PLaLZB“; Z dort gestrichen (Editionsfehler) – Korrektur des Herausgebers vom 18.10.2026 -->
+            <lem>de pactionibus licitis</lem>
+            <rdg wit="#P #La #L #B">de pact. li.</rdg>
+            <rdg wit="#D">de pactis li.</rdg>
+            <rdg wit="#Z">de pact.</rdg>
+          </app>
+          <app from="#D2.t1.a73s" to="#D2.t1.a73e" n="211">
+            <lem>toleratur</lem>
+            <rdg wit="#P">tolerat</rdg>
+          </app>
+          <app from="#D2.t1.a74s" to="#D2.t1.a74e" n="212">
+            <lem>releuet</lem>
+            <rdg wit="#P #La">reuelet</rdg>
+          </app>
+          <app from="#D2.t1.a75s" to="#D2.t1.a75e" n="214">
+            <lem>debeat</lem>
+            <rdg wit="#P">debat</rdg>
+          </app>
+          <app from="#D2.t1.a76s" to="#D2.t1.a76e" n="216">
+            <lem>Si quis – q. v.</lem>
+            <rdg wit="#B" type="om"/>
+          </app>
+          <app from="#D2.t1.a77s" to="#D2.t1.a77e" n="217">
+            <lem>debet</lem>
+            <rdg wit="#P">debat</rdg>
+          </app>
+          <app from="#D2.t1.a78s" to="#D2.t1.a78e" n="218">
+            <lem>est</lem>
+            <rdg wit="#P" type="om"/>
+          </app>
+          <app from="#D2.t1.a79s" to="#D2.t1.a79e" n="223-224">
+            <lem>eis – remanentibus</lem>
+            <rdg wit="#Z">et ea que sunt honeris retinet</rdg>
+          </app>
+        </listApp>
+      </div>
+
+      <!-- ===== Quellenapparat =====
+           Allegationen: Auflösung steht direkt am <ref> (@cRef), daraus wird der Apparat generiert.
+           Hier nur Einträge, die keine Allegation auflösen (Parallelen, Glossen, Forschung). -->
+      <div type="apparatus" subtype="fontium">
+        <note type="fons" target="#D2.t1.pers1" n="17">G. cf. Weigand, Gandulphusglossen, p. 30 (196*) no. 9 ad <ref type="allegation" subtype="gratian" cRef="C.1 q.1 c.1" target="dg:1_1080">C.1 q.1 c.1</ref></note>
+        <note type="fons" target="#D2.t1.f1s" targetEnd="#D2.t1.f1e" n="49-59">Cf. Hon. S. Decr. ad <ref type="allegation" subtype="gratian" cRef="C.32 q.2 c.13" target="dg:3_3292">C.32 q.2 c.13</ref></note>
+        <note type="fons" target="#D2.t1.pers2" n="60">secundum G. cf. Weigand, Gandulphusglossen, p. 40 (206*) no. 1 ad <ref type="allegation" subtype="gratian" cRef="D.23 c.3" target="dg:0_199">D.23 c.3</ref></note>
+        <note type="fons" target="#D2.t1.f2s" targetEnd="#D2.t1.f2e" n="62-70">Cf. S. Lips. ad <ref type="allegation" subtype="gratian" cRef="C.2 q.3 c.7" target="dg:1_1323">C.2 q.3 c.7</ref></note>
+        <note type="fons" target="#D2.t1.f3s" targetEnd="#D2.t1.f3e" n="80-84">Suspensio - liberatio cf. Hon. S. Decr. ad <ref type="allegation" subtype="gratian" cRef="C.16 q.7 c.7" target="dg:2_2385">C.16 q.7 c.7</ref>, lin. 10-14</note>
+        <note type="fons" target="#D2.t1.pers6" n="81">Secundum S. cf. Weigand, Studien z. Werk Stephans, p. 356 (174*) no. 9 ad <ref type="allegation" subtype="gratian" cRef="D.82 c.5" target="dg:0_883">D.82 c.5</ref> argumento <ref type="allegation" subtype="gratian" cRef="D.50 c.37" target="dg:0_550">D.50 c.37</ref>; var. G non invenimus</note>
+        <note type="fons" target="#D2.t1.pers7" n="82">Secundum h. - non invenimus; var. S, cf. supra ad lin. 81</note>
+        <note type="fons" target="#D2.t1.pers8" n="95">Secundum S. cf. Weigand, Die Glossen z. Dekret, p. 115 no. 566 ad <ref type="allegation" subtype="gratian" cRef="C.1 q.3 c.4" target="dg:1_1225">C.1 q.3 c.4</ref>; var. G non invenimus</note>
+        <note type="fons" target="#D2.t1.f4s #D2.t1.f5s" targetEnd="#D2.t1.f4e #D2.t1.f5e" n="98-101, 108">Cf. S. Lips. ad <ref type="allegation" subtype="gratian" cRef="C.1 q.2 c.2" target="dg:1_1212">C.1 q.2 c.2</ref></note>
+        <note type="fons" target="#D2.t1.f6s" targetEnd="#D2.t1.f6e" n="123-124">Cf. S. Lips. ad <ref type="allegation" subtype="gratian" cRef="C.1 q.2 c.2" target="dg:1_1212">C.1 q.2 c.2</ref></note>
+        <note type="fons" target="#D2.t1.f7s" targetEnd="#D2.t1.f7e" n="157-159">Cf. Hon. S. Decr. ad <ref type="allegation" subtype="gratian" cRef="C.1 q.1 c.99" target="dg:1_1178">C.1 q.1 c.99</ref></note>
+        <note type="fons" target="#D2.t1.pers9" n="168">G. cf. Weigand, Gandulphusglossen, p. 27 (193*) no. 52 ad <ref type="allegation" subtype="gratian" cRef="C.1 q.1 c.101" target="dg:1_1180">C.1 q.1 c.101</ref> et Weigand, Glossen des Johannes Faventinus, p. 83 (223*) no. 9f ad <ref type="allegation" subtype="gratian" cRef="C.1 q.1 c.100" target="dg:1_1179">C.1 q.1 c.100</ref></note>
+        <note type="fons" target="#D2.t1.f8s" targetEnd="#D2.t1.f8e" n="170-173">Cf. S. Lips. ad <ref type="allegation" subtype="gratian" cRef="C.1 q.1 c.11" target="dg:1_1090">C.1 q.1 c.11</ref> (ad v. Iudas)</note>
+        <note type="fons" target="#D2.t1.f9s" targetEnd="#D2.t1.f9e" n="183-184">Cf. S. Lips. ad <ref type="allegation" subtype="gratian" cRef="C.2 q.3 c.7" target="dg:1_1323">C.2 q.3 c.7</ref> (in fine)</note>
+        <note type="fons" target="#D2.t1.zit7" n="187-188"><ref type="allegation" subtype="codex" cRef="Cod. 1.14.5">Cod. 1.14.5</ref></note>
+      </div>
+    </back>
+  </text>
+
+  <!-- ===== Normdaten (Register) ===== -->
+  <standOff>
+    <listPerson>
+      <person xml:id="gandulphus">
+        <persName xml:lang="la">Gandulphus Bononiensis</persName>
+      </person>
+      <person xml:id="stephanus">
+        <persName xml:lang="la">Stephanus Tornacensis</persName>
+        <note>Siglum S. identified after Weigand, Studien z. Werk Stephans (source apparatus to l. 81)</note>
+      </person>
+      <person xml:id="euthemius">
+        <persName xml:lang="la">Euthemius</persName>
+        <persName type="variant" xml:lang="la">Euthenius</persName>
+        <note>Person in C.2 q.3 c.7 (Friedberg: Eufemius); in the text also Euthenius (l. 64)</note>
+      </person>
+      <person xml:id="thomas">
+        <persName xml:lang="la">Thomas</persName>
+        <note>Person in C.2 q.3 c.7</note>
+      </person>
+      <person xml:id="iudas">
+        <persName xml:lang="la">Iudas Iscariotes</persName>
+      </person>
+    </listPerson>
+    <listPerson type="divine">
+      <person xml:id="deus">
+        <persName xml:lang="la">Deus</persName>
+      </person>
+      <person xml:id="christus">
+        <persName xml:lang="la">Christus</persName>
+      </person>
+    </listPerson>
+  </standOff>
+</TEI>

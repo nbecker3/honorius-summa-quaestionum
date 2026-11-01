@@ -1,0 +1,418 @@
+/* Leseansicht der digitalen Edition – Gestaltung
+   Text in Junicode (deckt die Sonderzeichen ꝯ ⸫ ⸪ Ↄ ‧ ab), Bedienelemente in der Systemschrift. */
+
+@font-face {
+  font-family: "Junicode";
+  src: url("fonts/JunicodeVF-Roman.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Junicode";
+  src: url("fonts/JunicodeVF-Italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+:root {
+  --papier: #fbfaf6;
+  --flaeche: #f2efe6;
+  --tinte: #1f1b16;
+  --grau: #6f675c;
+  --linie: #ddd6c7;
+  --akzent: #7a2e1f;          /* Allegationen, Verweise */
+  --akzent-hell: #f3e3dc;
+  --markierung: #f6dc8a;      /* angeklicktes Lemma (gelb = Varianten) */
+  --markierung-blass: #fbf0c8;   /* überfahrenes Lemma */
+  --quelle-blass: #f3e3dc;    /* überfahrene Quelle (rot = Quellen) */
+  --quelle-stark: #ebc2b2;    /* angeklickte Quellenstelle */
+  --block: #e8eef6;           /* Allegationsblock beim Überfahren (blau) */
+  --unterstrich: color-mix(in srgb, var(--akzent) 55%, var(--papier));   /* "Show lemmata", deckend */
+  --text: "Junicode", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --textspalte: 40rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papier: #1b1916; --flaeche: #24211d; --tinte: #ece6da; --grau: #a99f90; --linie: #3a352e;
+    --akzent: #e09a83; --akzent-hell: #3b2620; --markierung: #6b5a1f; --block: #22303f;
+    --markierung-blass: #3a3219; --quelle-blass: #3b2620; --quelle-stark: #5c3226;
+  }
+}
+:root[data-theme="dark"] {
+  --papier: #1b1916; --flaeche: #24211d; --tinte: #ece6da; --grau: #a99f90; --linie: #3a352e;
+  --akzent: #e09a83; --akzent-hell: #3b2620; --markierung: #6b5a1f; --block: #22303f;
+  --markierung-blass: #3a3219; --quelle-blass: #3b2620; --quelle-stark: #5c3226;
+}
+
+* { box-sizing: border-box; }
+html { scroll-padding-top: 5rem; }
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--tinte);
+  font-family: var(--ui);
+  line-height: 1.5;
+}
+a { color: var(--akzent); }
+.sprung { position: absolute; left: -999px; }
+.sprung:focus { left: 1rem; top: 1rem; background: var(--papier); padding: .5rem; z-index: 20; }
+
+/* ---------- Kopf ---------- */
+.kopf {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: .6rem 1.25rem;
+  background: var(--flaeche);
+  border-bottom: 1px solid var(--linie);
+}
+.kopf .werk { margin: 0; font-family: var(--text); font-variant: small-caps; letter-spacing: .06em; color: var(--grau); font-size: .95rem; }
+.kopf h1, .kopf .kopf-name { margin: 0; font-family: var(--text); font-weight: 600; font-size: 1.35rem; line-height: 1.2; }
+.kopf h1 .incipit, .kopf .kopf-name .incipit { font-weight: 400; font-style: italic; font-size: 1rem; color: var(--grau); }
+.kopf .stand { margin: .1rem 0 0; font-size: .8rem; color: var(--grau); }
+.kopf-werkzeuge { display: flex; gap: .5rem; flex-shrink: 0; }
+.kopf-werkzeuge button, .kopf-werkzeuge a, dialog button {
+  font: inherit; font-size: .85rem;
+  padding: .35rem .75rem;
+  border: 1px solid var(--linie); border-radius: 4px;
+  background: var(--papier); color: var(--tinte);
+  text-decoration: none; cursor: pointer;
+}
+.kopf-werkzeuge button:hover, .kopf-werkzeuge a:hover { border-color: var(--akzent); }
+.nur-schmal { display: none; }
+
+/* ---------- Rahmen: Navigation | Text ---------- */
+.rahmen {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr);
+  gap: 2.5rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+nav {
+  position: sticky; top: 5.5rem; align-self: start;
+  max-height: calc(100vh - 7rem); overflow-y: auto;
+  font-size: .85rem;
+}
+nav h2 { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--grau); margin: 1.25rem 0 .4rem; }
+nav h2:first-child { margin-top: 0; }
+.inhalt, .register-liste { list-style: none; margin: 0; padding: 0; }
+.inhalt li { margin: .1rem 0; }
+.inhalt a, .register-liste a { display: block; padding: .15rem .4rem; border-radius: 3px; text-decoration: none; color: var(--tinte); }
+.inhalt a:hover, .register-liste a:hover { background: var(--akzent-hell); }
+.inhalt a.aktuell { background: var(--akzent-hell); color: var(--akzent); }
+.inhalt .q { font-weight: 600; display: inline-block; min-width: 2.6rem; }
+.inhalt .incipit { color: var(--grau); font-family: var(--text); font-size: .9rem; }
+.schalter { display: block; margin: .25rem 0; cursor: pointer; }
+/* Modus des Haupttextes: Variants | Sources */
+.modus-schalter { display: inline-flex; margin: .1rem 0 .45rem; border: 1px solid var(--linie); border-radius: 4px; overflow: hidden; }
+.modus-schalter label { position: relative; padding: .2rem .75rem; cursor: pointer; }
+.modus-schalter label + label { border-left: 1px solid var(--linie); }
+.modus-schalter input { position: absolute; opacity: 0; pointer-events: none; }
+.modus-schalter label:has(input:checked) { background: var(--akzent); color: var(--papier); }
+.modus-schalter label:has(input:focus-visible) { outline: 2px solid var(--akzent); outline-offset: -2px; }
+.hinweis { color: var(--grau); font-size: .78rem; margin-top: .75rem; }
+.hinweis strong { color: var(--tinte); font-weight: 600; }
+body.modus-quellen .nur-varianten, body.modus-varianten .nur-quellen { display: none; }   /* Hinweis je nach Modus */
+/* Hinweis je nach Bedienung: Maus ("point", "click") oder Berührung ("tap", Smartphone/Tablet ohne Maus) */
+.nur-touch { display: none; }
+@media (hover: none) {
+  .hinweis .nur-maus { display: none; }
+  .hinweis .nur-touch { display: inline; }
+}
+
+/* ---------- Edition ---------- */
+main { min-width: 0; outline: none; }
+.laden, .fehler { font-family: var(--text); color: var(--grau); }
+/* Hinweis für ältere Browser (ohne Highlight-Markierungen) unter dem Kopf */
+.browser-hinweis {
+  margin: 0; padding: .5rem 1.25rem; text-align: center;
+  font-size: .85rem; color: var(--tinte); background: var(--markierung-blass); border-bottom: 1px solid var(--linie);
+}
+.fehler { color: var(--akzent); }
+
+tei-teiheader, tei-facsimile, tei-back, tei-standoff, cetei-original { display: none; }
+tei-tei, tei-text, tei-body, tei-div, tei-p, tei-head { display: block; }
+
+tei-text {
+  font-family: var(--text);
+  font-size: 1.15rem;
+  line-height: 1.62;
+  font-variant-numeric: lining-nums;   /* Mediävalziffern machen in Junicode aus "1" ein "ı" */
+}
+tei-div[type="distinctio"] > tei-head {
+  text-align: center; font-weight: 700; font-size: 1.3rem; letter-spacing: .04em; margin: .5rem 0 1rem;
+}
+tei-supplied::before { content: "‹ "; color: var(--grau); }
+tei-supplied::after { content: " ›"; color: var(--grau); }
+tei-div[type="titulus"] > tei-head {
+  text-align: center; font-weight: 700; font-size: 1.2rem; margin: 0 0 .5rem;
+}
+tei-div[type="titulus"] > tei-head tei-label { margin-right: .6em; }
+.faksimile {
+  display: block; margin: .15rem 0 0; text-align: center;
+  font-family: var(--ui); font-weight: 400; font-size: .78rem;
+}
+
+/* Quaestio und Abschnitte; Text in der Spalte, Zeilenzahlen links davon */
+tei-div[type="quaestio"] { margin: 1.4rem 0 0; scroll-margin-top: 5.5rem; }
+tei-div[type="quaestio"] tei-p,
+tei-div[type="titulus"] > .apparate { margin-left: 3.2rem; max-width: var(--textspalte); }
+tei-div[type="quaestio"] tei-p { position: relative; margin-top: 0; margin-bottom: 0; }
+tei-label { font-weight: 700; margin-right: .5em; }
+.formel { font-weight: 700; }
+
+/* Zeilenumbruch wie im Druck: <br> an jedem <lb>, Zeilenzahl in der linken Spalte */
+.zeilennummer {
+  position: absolute; left: -3.2rem; width: 2.4rem;
+  text-align: right;
+  font-family: var(--ui); font-size: .7rem; line-height: 2.3;
+  color: var(--grau);
+  visibility: hidden;
+  user-select: none;
+}
+.zeilennummer.fuenf { visibility: visible; }
+body.ohne-zeilen .zeilennummer { display: none; }
+@media (min-width: 60rem) {
+  tei-div[type="quaestio"] tei-p { white-space: nowrap; }   /* keine zusätzlichen Umbrüche: Zeilen = Druckzeilen */
+}
+
+/* Seitenwechsel des Drucks */
+tei-pb[ed="#ed2021"]::before {
+  content: "|" attr(n) "|";
+  font-family: var(--ui); font-size: .68rem; color: var(--grau);
+  vertical-align: super; padding: 0 .15em;
+}
+tei-div > tei-pb[ed="#ed2021"] { display: block; margin-left: 3.2rem; max-width: var(--textspalte); text-align: right; height: 0; }
+tei-div > tei-pb[ed="#ed2021"]::before { position: relative; top: -.2rem; }
+
+/* Blatt- und Spaltenwechsel der Handschrift P: Strich im Text, Marke "fol. 61ra" (ohne Randspalte klein hinter dem Strich) */
+tei-pb[ed="#P"], tei-cb[ed="#P"] { display: none; }
+.spaltenwechsel { color: var(--akzent); margin-left: .25em; font-weight: 400; cursor: default; }   /* danach folgt das Leerzeichen des Textes */
+.folio-marke {
+  font-family: var(--ui); font-size: .68rem; font-weight: 400;
+  color: var(--akzent); text-decoration: none; white-space: nowrap;
+  vertical-align: super; margin: 0 .15em 0 .1em;
+}
+.folio-marke:hover, .folio-marke:focus-visible { text-decoration: underline; }
+/* nach dem Blättern im Viewer: Randmarke bzw. Link in der Titelzeile leuchtet kurz auf */
+@keyframes aufleuchten { from { background-color: var(--markierung); } to { background-color: transparent; } }
+.aufleuchten { animation: aufleuchten 1.8s ease-out; border-radius: 3px; }
+
+/* Randmarken: Folio-Marken rechtsbündig genau unter den Seitenzahlen des Drucks (rechter Rand der Textspalte,
+   höchstens --textspalte breit wie der Seitenwechsel). body.randmarken setzt honorius.js nur, wenn keine Zeile
+   an die Marke stößt; sonst bleibt die Marke klein hinter dem Strich. */
+body.randmarken .folio-marke {
+  position: absolute; left: auto; right: calc(100% - min(100%, var(--textspalte)));
+  margin: 0; padding-right: .15em;   /* wie die Seitenzahl (::before) */
+  vertical-align: baseline; line-height: 2.5;
+}
+
+/* Zitate: die Anführungszeichen des Drucks stehen nicht in der TEI-Datei */
+tei-quote::before { content: "‘"; }
+tei-quote::after { content: "’"; }
+/* "(!)" der Edition ist als <sic> kodiert */
+tei-sic::after { content: "(!)"; }
+
+/* Allegationen und Namen: im Text ohne eigene Linie (Wunsch des Herausgebers vom 24.10.2026) */
+tei-ref[type="allegation"] > a { color: inherit; text-decoration: none; }
+tei-ref[type="allegation"] > a:focus-visible, tei-ref[type="allegation"]:focus-visible { outline: 2px solid var(--akzent); outline-offset: 1px; border-radius: 2px; }
+/* Variants-Modus: Allegationen im Haupttext reagieren nicht, ein Klick markiert das Lemma */
+body.modus-varianten tei-body tei-ref[type="allegation"] > a { pointer-events: none; }
+/* Browser ohne Highlight-Markierungen: Allegation und Block im Sources-Modus über CSS hervorheben */
+body.ohne-highlights.modus-quellen tei-ref[type="allegation"] > a:hover { color: var(--akzent); background-color: var(--quelle-blass); }
+body.ohne-highlights.modus-quellen tei-seg[type="allegationes"].hervor { background: var(--block); }
+
+/* Markierungen im Text (CSS Custom Highlight API, Vorrang in honorius.js: Quellen vor Varianten).
+   Gelb = Varianten, Rot = Quellen, Blau = Allegationsblock; blass = überfahren, kräftig = angeklickt. */
+::highlight(lemma-hover) { background-color: var(--markierung-blass); }
+::highlight(lemma-aktiv) { background-color: var(--markierung); color: var(--tinte); }
+::highlight(block-hover) { background-color: var(--block); }
+::highlight(quelle-hover) { background-color: var(--quelle-blass); color: var(--akzent); }
+::highlight(quelle-aktiv) { background-color: var(--quelle-stark); color: var(--tinte); }
+/* "Show lemmata": größte Lemmata bzw. Quellenstellen unterstrichen (deckende Farbe: Überlagerungen sehen gleich aus) */
+::highlight(linien) {
+  text-decoration: underline;
+  text-decoration-color: var(--unterstrich);
+  text-decoration-thickness: 2px;
+}
+#edition.zeiger tei-body { cursor: pointer; }
+
+/* ---------- Apparate je Quaestio ---------- */
+.apparate {
+  font-family: var(--text);
+  font-size: .86rem;
+  line-height: 1.5;
+  margin: .9rem 0 0 3.2rem;
+  max-width: var(--textspalte);
+  border-top: 1px solid var(--linie);
+  padding-top: .45rem;
+}
+body.ohne-apparat .apparate { display: none; }
+.apparat-teil + .apparat-teil { margin-top: .4rem; padding-top: .4rem; border-top: 1px dotted var(--linie); }
+.apparat-titel {
+  font-family: var(--ui); font-size: .68rem; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--grau); margin: 0 0 .15rem;
+}
+.eintrag {
+  display: inline;
+  margin-right: 1.3em;
+  padding: .05em .15em;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.eintrag:hover { background: var(--markierung-blass); }
+.eintrag.aktiv { background: var(--markierung); }
+.eintrag .z { font-family: var(--ui); font-size: .78em; color: var(--grau); margin-right: .35em; font-variant-numeric: tabular-nums; }
+.eintrag i { font-style: italic; }
+.eintrag abbr { text-decoration: none; cursor: help; }   /* Sigel: Handschrift beim Überfahren */
+.af .eintrag { cursor: default; }
+.af .eintrag:hover { background: none; }
+/* Quellenapparat: Notizen anklickbar (markieren ihre Stelle im Text rot) */
+.af .teil.notiz { cursor: pointer; border-radius: 3px; padding: .05em .1em; }
+.af .teil.notiz:hover { background: var(--quelle-blass); }
+.af .teil.aktiv { background: var(--quelle-stark); }
+.korrektur { color: var(--akzent); font-family: var(--ui); font-size: .8em; cursor: help; margin-left: .15em; }
+
+/* ---------- Popup (Einträge zu einem angeklickten Lemma) ---------- */
+.popup {
+  position: absolute; z-index: 15;
+  max-width: min(28rem, calc(100vw - 2rem));
+  background: var(--papier);
+  border: 1px solid var(--linie); border-radius: 6px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / .15);
+  padding: .6rem .8rem;
+  font-family: var(--text); font-size: .9rem;
+}
+.popup .eintrag { display: block; margin: .15rem 0; }
+
+/* ---------- Register ---------- */
+.register { font-family: var(--text); margin-top: 3rem; border-top: 2px solid var(--linie); padding-top: 1rem; }
+.register h2 { font-size: 1.15rem; margin: 1.5rem 0 .5rem; scroll-margin-top: 5.5rem; }
+.register h3 { font-family: var(--ui); font-size: .78rem; text-transform: uppercase; letter-spacing: .07em; color: var(--grau); margin: 1rem 0 .3rem; }
+.register ul { list-style: none; margin: 0; padding: 0; }
+.register li { margin: .2rem 0; padding-left: 1.5rem; text-indent: -1.5rem; }
+.register .stellen { color: var(--grau); font-size: .9em; }
+.register .stellen a { color: var(--akzent); text-decoration: none; }
+.register .verweis { color: var(--grau); font-style: italic; }
+.register .anm { display: block; color: var(--grau); font-size: .85em; text-indent: 0; }
+
+/* ---------- Dialog, Fuß ---------- */
+dialog {
+  border: 1px solid var(--linie); border-radius: 8px;
+  background: var(--papier); color: var(--tinte);
+  max-width: 36rem; padding: 1.25rem 1.5rem;
+}
+dialog::backdrop { background: rgb(0 0 0 / .35); }
+dialog h2 { margin-top: 0; font-size: 1.05rem; }
+.zitat-vorschlag { font-family: var(--text); background: var(--flaeche); padding: .75rem; border-radius: 4px; }
+.dialog-knoepfe { display: flex; gap: .5rem; justify-content: flex-end; }
+.fuss {
+  border-top: 1px solid var(--linie); background: var(--flaeche);
+  font-size: .78rem; color: var(--grau);
+  padding: 1rem 1.25rem; text-align: center;
+}
+.fuss p { max-width: 60rem; margin: .3rem auto; }
+
+/* ---------- Umschalter Leseansicht | Parallelansicht ---------- */
+.ansicht-schalter { display: inline-flex; }
+.ansicht-schalter[hidden] { display: none; }
+.kopf-werkzeuge .ansicht-schalter button { border-radius: 0; }
+.kopf-werkzeuge .ansicht-schalter button:first-child { border-radius: 4px 0 0 4px; }
+.kopf-werkzeuge .ansicht-schalter button:last-child { border-radius: 0 4px 4px 0; border-left: none; }
+.kopf-werkzeuge .ansicht-schalter button[aria-pressed="true"] { background: var(--akzent); border-color: var(--akzent); color: var(--papier); }
+
+/* ---------- Parallelansicht: Text links, Handschrift P rechts ---------- */
+.viewer { display: none; }
+body.viewer-ansicht .rahmen { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); max-width: none; gap: 1.5rem; }
+body.viewer-ansicht .nur-schmal { display: inline-block; }
+/* Inhalt und Ansichtsoptionen als aufklappbares Feld über dem Text */
+body.viewer-ansicht nav { display: none; }
+body.viewer-ansicht nav.offen {
+  display: block; position: fixed; z-index: 12;
+  top: calc(var(--kopf, 4.5rem) + .5rem); left: 1rem; width: 18rem; max-height: calc(100vh - var(--kopf, 4.5rem) - 2rem);
+  background: var(--papier); border: 1px solid var(--linie); border-radius: 6px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / .15); padding: .8rem 1rem;
+}
+body.viewer-ansicht tei-text { font-size: 1.02rem; }
+/* "q.N" zeigt die Eingangsfrage in P (nur hier anklickbar); Hintergrund per Schatten, damit sich nichts verschiebt */
+body.viewer-ansicht .q-marke { cursor: pointer; color: var(--akzent); border-radius: 2px; }
+body.viewer-ansicht .q-marke:hover, body.viewer-ansicht .q-marke.gezeigt {
+  background: var(--akzent-hell); box-shadow: 0 0 0 .15em var(--akzent-hell);
+}
+body.viewer-ansicht .q-marke:focus-visible { outline: 2px solid var(--akzent); outline-offset: 2px; }
+/* Rahmen um die Eingangsfrage im Bild von P (wie auf der Prüfseite: rot, blassgelb gefüllt) */
+.zone-rahmen { pointer-events: none; }
+.zone-rahmen svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.zone-rahmen polygon { fill: rgb(255 196 0 / .16); stroke: #c62828; stroke-width: 2.5px; stroke-linejoin: round; }
+body.viewer-ansicht tei-div[type="quaestio"] tei-p { white-space: normal; max-width: none; }   /* zu lange Zeilen umbrechen */
+body.viewer-ansicht .apparate { max-width: none; }
+
+body.viewer-ansicht .viewer {
+  display: flex; flex-direction: column;
+  position: sticky; top: calc(var(--kopf, 0px) + .75rem); align-self: start;
+  height: calc(100vh - var(--kopf, 0px) - 1.5rem);
+  border: 1px solid var(--linie); border-radius: 6px; background: var(--flaeche);
+  overflow: hidden;
+}
+.viewer-leiste {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .35rem;
+  padding: .4rem .5rem; border-bottom: 1px solid var(--linie);
+  font-size: .8rem;
+}
+.viewer-leiste button {
+  font: inherit; min-width: 2rem; padding: .2rem .5rem;
+  border: 1px solid var(--linie); border-radius: 4px; background: var(--papier); color: var(--tinte); cursor: pointer;
+}
+.viewer-leiste button:hover:not(:disabled) { border-color: var(--akzent); }
+.viewer-leiste button:disabled { opacity: .4; cursor: default; }
+.viewer-seite { min-width: 7.5rem; text-align: center; font-weight: 600; }
+.viewer-abstand { flex: 1; }
+.viewer-leiste .schalter { display: inline-flex; align-items: center; gap: .25rem; margin: 0 .4rem; }
+.viewer-bild { flex: 1; min-height: 0; background: #3b3833; }
+.viewer-meldung { margin: 0; padding: .5rem .75rem; font-size: .8rem; color: var(--akzent); border-top: 1px solid var(--linie); }
+.viewer-quelle { margin: 0; padding: .3rem .75rem; font-size: .72rem; color: var(--grau); border-top: 1px solid var(--linie); }
+
+/* schmalere Bildschirme: Handschrift über dem Text */
+@media (max-width: 60rem) {
+  body.viewer-ansicht .rahmen { grid-template-columns: minmax(0, 1fr); gap: .75rem; }
+  body.viewer-ansicht .viewer { order: -1; height: 45vh; top: var(--kopf, 0px); z-index: 5; }
+}
+
+/* ---------- Schmale Bildschirme ---------- */
+@media (max-width: 52rem) {
+  .rahmen { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 1rem 1rem 3rem; }
+  nav { display: none; position: static; max-height: none; border-bottom: 1px solid var(--linie); padding-bottom: 1rem; margin-bottom: 1rem; }
+  nav.offen { display: block; }
+  .nur-schmal { display: inline-block; }
+  .kopf { position: static; flex-wrap: wrap; padding: .5rem 1rem; }
+  /* Knöpfe im Kopf dürfen auf Smartphones in eine zweite Zeile umbrechen (sonst ist die Seite breiter als der Bildschirm) */
+  .kopf-werkzeuge { flex-wrap: wrap; flex-shrink: 1; min-width: 0; row-gap: .4rem; }
+  .kopf h1, .kopf .kopf-name { font-size: 1.15rem; }
+  .kopf h1 .incipit, .kopf .kopf-name .incipit, .kopf .werk { display: none; }
+  .kopf .stand { font-size: .75rem; }
+  tei-div[type="quaestio"] tei-p, .apparate, tei-div > tei-pb { margin-left: 2.2rem; }
+  .zeilennummer { left: -2.2rem; width: 1.8rem; }
+}
+
+/* ---------- Seite "About this edition / Imprint / Privacy" (about.html) ---------- */
+.info { max-width: 44rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; font-family: var(--text); font-size: 1.05rem; line-height: 1.55; }
+.info h1 { font-size: 1.6rem; font-weight: 600; margin: .5rem 0 1rem; }
+.info h2 { font-size: 1.2rem; font-weight: 600; margin: 2rem 0 .6rem; padding-top: 1.25rem; border-top: 1px solid var(--linie); scroll-margin-top: 5.5rem; }
+.info ul { padding-left: 1.2rem; }
+.info li { margin: .35rem 0; }
+.info address { font-style: normal; margin: .5rem 0 1rem; }
+.info code { font-size: .85em; }
+
+/* ---------- Druck ---------- */
+@media print {
+  .kopf-werkzeuge, nav, .popup, .fuss, .viewer { display: none !important; }
+  body.viewer-ansicht .rahmen { display: block; }
+  .kopf { position: static; }
+  .rahmen { display: block; }
+  ::highlight(lemma-hover), ::highlight(lemma-aktiv), ::highlight(block-hover), ::highlight(quelle-hover),
+  ::highlight(quelle-aktiv), ::highlight(linien) { background: none; color: inherit; text-decoration: none; }
+}
